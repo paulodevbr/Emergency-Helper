@@ -42,5 +42,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         LatLng inf = new LatLng(-16.6177964, -49.2020505);
         mMap.addMarker(new MarkerOptions().position(inf).title("INF-UFG"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(inf));
+
+
     }
 }

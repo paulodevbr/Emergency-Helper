@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "1094787949961",
+    "firebase_url": "https://astute-elixir-134023.firebaseio.com",
+    "project_id": "astute-elixir-134023",
+    "storage_bucket": "astute-elixir-134023.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1094787949961:android:304e4029b613c4f6",
+        "android_client_info": {
+          "package_name": "app.com.bugdroidbuilder.paulo.emergencyhelper"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1094787949961-9j4e24ghn6sjjsnlhbvqp39aj1d0m9hl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "app.com.bugdroidbuilder.paulo.emergencyhelper",
+            "certificate_hash": "58389FF98380DD793CC630205AB2510D87D08DC2"
+          }
+        },
+        {
+          "client_id": "1094787949961-6tt8aif30ujm55pqjnosucrhs4cg6cie.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCQNcfaMTSfDpAVEJR8aqGU-B4Lk7qHFE0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1094787949961-6tt8aif30ujm55pqjnosucrhs4cg6cie.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
