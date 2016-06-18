@@ -10,10 +10,6 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.ValueEventListener;
-
 import app.com.bugdroidbuilder.paulo.emergencyhelper.R;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.controler.FireControler;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.model.Hospital;
@@ -32,9 +28,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
 
-        Hospital teste = fireControler.getHospital("Hosp");
-        //Log.d("ICEDB", "Nome: " + teste.getNome());
-
         mapFragment.getMapAsync(this);
     }
 
@@ -52,11 +45,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
+        Hospital teste = fireControler.getHospital("Hosp");
+        //fireControler.callHospital(teste,this);
+        //Log.d("ICEDB", "Nome: " + teste.getNome());
+
         // Add a marker in INF and move the camera
         LatLng inf = new LatLng(-12.000, 25.555);
         MarkerOptions mark = new MarkerOptions().position(inf).title("teste");
-
-
 
         mMap.addMarker(mark);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(inf));
