@@ -2,7 +2,6 @@ package app.com.bugdroidbuilder.paulo.emergencyhelper.view;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -11,13 +10,10 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.R;
-import app.com.bugdroidbuilder.paulo.emergencyhelper.controler.FireControler;
-import app.com.bugdroidbuilder.paulo.emergencyhelper.model.Hospital;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-    private FireControler fireControler = new FireControler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,10 +40,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
-        Hospital teste = fireControler.getHospital("Hosp");
-        //fireControler.callHospital(teste,this);
-        //Log.d("ICEDB", "Nome: " + teste.getNome());
 
         // Add a marker in INF and move the camera
         LatLng inf = new LatLng(-12.000, 25.555);
