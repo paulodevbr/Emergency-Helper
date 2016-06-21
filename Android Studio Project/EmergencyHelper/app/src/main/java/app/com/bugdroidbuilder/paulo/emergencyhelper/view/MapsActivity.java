@@ -1,7 +1,8 @@
 package app.com.bugdroidbuilder.paulo.emergencyhelper.view;
 
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -9,9 +10,10 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+
 import app.com.bugdroidbuilder.paulo.emergencyhelper.R;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
 
@@ -24,7 +26,24 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
 
+//        startToolbar();
         mapFragment.getMapAsync(this);
+    }
+
+    /** Initialize app toolbar
+     *
+     */
+//    public void startToolbar(){
+//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_maps);
+//        setSupportActionBar(toolbar);
+//        toolbar.setTitle("Emergency Helper");
+//        toolbar.setTitleTextColor(getResources().getColor(R.color.common_google_signin_btn_text_dark));
+//    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_maps, menu);
+        return true;
     }
 
 
