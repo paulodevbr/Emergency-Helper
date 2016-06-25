@@ -2,4 +2,11 @@
     <string name="app_name">Emergency Helper</string>
     <string name="title_activity_maps">Map</string>
     <string name="menu_configuracoes">Configurações</string>
+    <string name="menu_hospitais">Hospitais</string>
+    <string name="menu_telefones">Telefones úteis</string>
+    <string name="telefone_policia_militar">190</string>
+    <string name="telefone_policia_rodoviaria_federal">191</string>
+    <string name="telefone_samu">192</string>
+    <string name="telefone_corpo_de_bombeiros">193</string>
+    <string name="title_activity_maps1">Map</string>
 </resources>

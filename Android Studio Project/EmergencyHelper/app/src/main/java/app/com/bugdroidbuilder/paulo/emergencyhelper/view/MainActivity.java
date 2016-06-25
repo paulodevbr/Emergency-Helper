@@ -3,6 +3,7 @@ package app.com.bugdroidbuilder.paulo.emergencyhelper.view;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import app.com.bugdroidbuilder.paulo.emergencyhelper.R;
@@ -19,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        hospital = fireControler.getHospital("Hosp");
+       hospital = fireControler.getHospital("Hosp");
 
         //TextView tv = (TextView) findViewById(R.id.hospitalName);
         //tv.setText(hospital.getNome());
