@@ -6,6 +6,7 @@ import android.view.Menu;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
@@ -23,22 +24,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         setContentView(R.layout.activity_maps);
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+        MapFragment mapFragment = (MapFragment) getFragmentManager()
                 .findFragmentById(R.id.map);
 
-//        startToolbar();
+
         mapFragment.getMapAsync(this);
     }
 
-    /** Initialize app toolbar
-     *
-     */
-//    public void startToolbar(){
-//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_maps);
-//        setSupportActionBar(toolbar);
-//        toolbar.setTitle("Emergency Helper");
-//        toolbar.setTitleTextColor(getResources().getColor(R.color.common_google_signin_btn_text_dark));
-//    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -60,7 +52,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        // Add a marker in INF and move the camera
         LatLng inf = new LatLng(-12.000, 25.555);
         MarkerOptions mark = new MarkerOptions().position(inf).title("teste");
 
