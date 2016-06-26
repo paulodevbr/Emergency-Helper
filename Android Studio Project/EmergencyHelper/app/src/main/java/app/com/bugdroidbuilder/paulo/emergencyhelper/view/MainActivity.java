@@ -1,37 +1,56 @@
 package app.com.bugdroidbuilder.paulo.emergencyhelper.view;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import app.com.bugdroidbuilder.paulo.emergencyhelper.R;
-import app.com.bugdroidbuilder.paulo.emergencyhelper.controler.FireControler;
+import app.com.bugdroidbuilder.paulo.emergencyhelper.controler.AsyncHospital;
+import app.com.bugdroidbuilder.paulo.emergencyhelper.controler.AsyncHospitalInterface;
+import app.com.bugdroidbuilder.paulo.emergencyhelper.controler.FireBaseControler;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.model.Hospital;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements AsyncHospitalInterface{
 
-    private FireControler fireControler = new FireControler();
-    private Hospital hospital;
+    AsyncHospital asyncHospitalTask = new AsyncHospital();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-       hospital = fireControler.getHospital("Hosp");
+        List<String> listaHosp = new ArrayList<>();
+        listaHosp.add("Hosp1");
 
-        //TextView tv = (TextView) findViewById(R.id.hospitalName);
-        //tv.setText(hospital.getNome());
+        this.asyncHospitalTask.delegate = this;
+        this.asyncHospitalTask.execute(listaHosp);
+    }
+
+    @Override
+    public void processFinish(List<Hospital> output) {
+
+        TextView tv = (TextView) findViewById(R.id.hospitalName);
+        Hospital hospital = output.get(0);
+        tv.setText(hospital.getNome());
+
+        //Bitmap bm = FireBaseControler.getImageByHospital(hospital, "imagem1");
+        //ImageView imv = (ImageView) findViewById(R.id.image);
+        //imv.setImageBitmap(bm);
     }
 
     public void callHosp(View view){
-        fireControler.callHospital(hospital,this);
     }
 
     public void goMap(View view){
         Intent myIntent = new Intent(this, MapsActivity.class);
         this.startActivity(myIntent);
     }
+
 }

@@ -7,7 +7,7 @@ import java.util.Map;
  */
 public class Hospital {
 
-    private int Identificador;
+    private String storageId;
     private String tipo;
 
     private double latitude;
@@ -24,8 +24,8 @@ public class Hospital {
     public Hospital() {
     }
 
-    public int getIdentificador() {
-        return Identificador;
+    public String getStorageId() {
+        return storageId;
     }
 
     public String getTipo() {
