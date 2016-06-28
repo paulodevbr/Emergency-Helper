@@ -38,7 +38,7 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_maps_key_paulo_notebook" />
+            android:value="@string/google_maps_key_paulo_desktop" />
 
         <activity android:name=".view.MainActivity">
             <intent-filter>
@@ -48,7 +48,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".view.MapsActivity"></activity>
-        <activity android:name=".view.TelefonesActivity"></activity>
+        <activity android:name=".view.TelefonesUteisActivity"></activity>
     </application>
 
 </manifest>

@@ -3,6 +3,7 @@ package app.com.bugdroidbuilder.paulo.emergencyhelper.view;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -10,7 +11,6 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -29,6 +29,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         MapFragment mapFragment = (MapFragment) getFragmentManager()
                 .findFragmentById(R.id.map);
 
+        final Toolbar toolbar = (Toolbar) findViewById(R.id.maps_toolbar);
+        ToolbarSupport.startToolbar(this, toolbar, "Emergency Helper");
 
         mapFragment.getMapAsync(this);
     }
@@ -44,9 +46,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        // if this option is selected, the app goes to SettingsActivity
+
         if (id == R.id.menu_telefones_uteis) {
-            startActivity(new Intent(this, TelefonesActivity.class));
+            startActivity(new Intent(this, TelefonesUteisActivity.class));
             return true;
         }
 
