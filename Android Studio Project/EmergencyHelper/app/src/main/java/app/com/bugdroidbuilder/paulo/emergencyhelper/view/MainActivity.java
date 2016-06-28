@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity implements AsyncHospitalInte
         Hospital hospital = output.get(0);
         tv.setText(hospital.getNome());
 
-        //Bitmap bm = FirebaseControler.getImageByHospital(hospital, "imagem1");
+        //Bitmap bm = FirebaseController.getImageByHospital(hospital, "imagem1");
         //ImageView imv = (ImageView) findViewById(R.id.image);
         //imv.setImageBitmap(bm);
     }
