@@ -3,17 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/telefones"
+        android:id="@+id/menu_telefones_uteis"
         android:orderInCategory="100"
         android:title="@string/menu_telefones"
         app:showAsAction="never" />
     <item
-        android:id="@+id/hospitais"
+        android:id="@+id/menu_hospitais"
         android:orderInCategory="100"
         android:title="@string/menu_hospitais"
         app:showAsAction="never" />
     <item
-        android:id="@+id/configuracoes"
+        android:id="@+id/menu_configuracoes"
         android:orderInCategory="100"
         android:title="@string/menu_configuracoes"
         app:showAsAction="never" />

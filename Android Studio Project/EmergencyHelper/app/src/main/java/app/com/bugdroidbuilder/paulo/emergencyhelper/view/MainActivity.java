@@ -1,20 +1,18 @@
 package app.com.bugdroidbuilder.paulo.emergencyhelper.view;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import app.com.bugdroidbuilder.paulo.emergencyhelper.R;
-import app.com.bugdroidbuilder.paulo.emergencyhelper.controler.AsyncHospital;
-import app.com.bugdroidbuilder.paulo.emergencyhelper.controler.AsyncHospitalInterface;
-import app.com.bugdroidbuilder.paulo.emergencyhelper.controler.FireBaseControler;
+import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.AsyncHospital;
+import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.AsyncHospitalInterface;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.model.Hospital;
 
 public class MainActivity extends AppCompatActivity implements AsyncHospitalInterface{
@@ -40,10 +38,12 @@ public class MainActivity extends AppCompatActivity implements AsyncHospitalInte
         Hospital hospital = output.get(0);
         tv.setText(hospital.getNome());
 
-        //Bitmap bm = FireBaseControler.getImageByHospital(hospital, "imagem1");
+        //Bitmap bm = FirebaseControler.getImageByHospital(hospital, "imagem1");
         //ImageView imv = (ImageView) findViewById(R.id.image);
         //imv.setImageBitmap(bm);
     }
+
+
 
     public void callHosp(View view){
     }
