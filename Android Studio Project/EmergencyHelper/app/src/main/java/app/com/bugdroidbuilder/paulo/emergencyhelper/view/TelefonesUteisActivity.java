@@ -43,6 +43,7 @@ public class TelefonesUteisActivity extends AppCompatActivity {
 
         listaTelefones.add(new TelefoneUtil("SAMU", "192"));
         listaTelefones.add(new TelefoneUtil("Policia Militar", "190"));
+        mAdapter.notifyDataSetChanged();
 
     }
     @Override

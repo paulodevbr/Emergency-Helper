@@ -1,9 +1,8 @@
 package app.com.bugdroidbuilder.paulo.emergencyhelper.view;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.MenuItem;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 
@@ -38,6 +37,7 @@ public class MainActivity extends AppCompatActivity implements AsyncHospitalInte
         Hospital hospital = output.get(0);
         tv.setText(hospital.getNome());
 
+
         //Bitmap bm = FirebaseController.getImageByHospital(hospital, "imagem1");
         //ImageView imv = (ImageView) findViewById(R.id.image);
         //imv.setImageBitmap(bm);
@@ -45,8 +45,7 @@ public class MainActivity extends AppCompatActivity implements AsyncHospitalInte
 
 
 
-    public void callHosp(View view){
-    }
+
 
     public void goMap(View view){
         Intent myIntent = new Intent(this, MapsActivity.class);
