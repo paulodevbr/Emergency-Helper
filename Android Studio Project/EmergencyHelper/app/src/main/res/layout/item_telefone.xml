@@ -2,12 +2,10 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_weight="10"
-    android:layout_marginTop="32dp"
-    android:layout_marginLeft="16dp"
-    android:layout_marginRight="16dp"
     android:background="?android:attr/selectableItemBackground"
     android:orientation="vertical">
+
+
 
     <ImageButton
         android:id="@+id/call_button"
@@ -15,13 +13,26 @@
         android:layout_height="32dp"
         android:src="@drawable/call_icon"
         android:background="#00ffffff"
-        android:layout_alignParentLeft="true"/>
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="16dp"/>
     <TextView
         android:id="@+id/telefones_descricao"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/colorPrimary"
-        android:layout_centerHorizontal="true"
-        android:textSize="24sp"/>
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="32dp"
+        android:layout_toRightOf="@+id/call_button"
+        android:textSize="18sp"/>
+    <LinearLayout
+
+        android:layout_height="0.7dp"
+        android:layout_width="match_parent"
+        android:background="@color/colorPrimary"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="40dp"
+        android:layout_marginBottom="40dp">
+    </LinearLayout>
 
 </RelativeLayout>

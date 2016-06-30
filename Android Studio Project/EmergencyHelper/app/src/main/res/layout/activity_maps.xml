@@ -2,8 +2,7 @@
     android:layout_width="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".view.MapsActivity">
+    >
     <android.support.v7.widget.Toolbar
         android:id="@+id/maps_toolbar"
         android:layout_width="match_parent"
