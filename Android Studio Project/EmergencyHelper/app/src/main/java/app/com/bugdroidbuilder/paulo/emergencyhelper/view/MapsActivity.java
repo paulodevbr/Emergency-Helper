@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -21,7 +22,6 @@ import app.com.bugdroidbuilder.paulo.emergencyhelper.R;
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,14 +69,17 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        int zoomInicial = 12;
+        double latitudeInicial = -16.6895498, longitudeInicial = -49.2650104;
+
         mMap = googleMap;
         //-16.6895498,-49.2650104
-        LatLng inf = new LatLng(-16.6895498,-49.2650104);
+        LatLng inf = new LatLng(latitudeInicial,longitudeInicial);
         MarkerOptions mark = new MarkerOptions().position(inf).title("teste");
 
         //mMap.addMarker(mark);
 
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(inf, 12));
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(inf, zoomInicial), 1500, null);
 
     }
 
@@ -86,6 +89,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         Intent intent = new Intent(Intent.ACTION_DIAL);
         intent.setData(Uri.parse(uri));
         try {
+            Toast.makeText(getApplicationContext(), "Ligando para SAMU", Toast.LENGTH_SHORT).show();
             startActivity(intent);
         }catch (SecurityException e){
 
