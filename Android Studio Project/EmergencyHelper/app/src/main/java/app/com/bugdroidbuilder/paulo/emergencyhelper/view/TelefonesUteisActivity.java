@@ -44,7 +44,6 @@ public class TelefonesUteisActivity extends AppCompatActivity {
             @Override
             public void onClick(View view, int position) {
                 TelefoneUtil telefoneUtil = listaTelefones.get(position);
-
                 String uri = "tel:" + telefoneUtil.getNumero().trim() ;
                 Intent intent = new Intent(Intent.ACTION_DIAL);
                 intent.setData(Uri.parse(uri));

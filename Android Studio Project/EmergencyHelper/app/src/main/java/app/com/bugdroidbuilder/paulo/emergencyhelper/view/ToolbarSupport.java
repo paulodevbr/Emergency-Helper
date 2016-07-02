@@ -7,6 +7,7 @@ import android.support.v7.widget.Toolbar;
 
 import app.com.bugdroidbuilder.paulo.emergencyhelper.R;
 
+
 /**
  * Created by paulo on 28/06/16.
  */

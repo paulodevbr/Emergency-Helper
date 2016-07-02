@@ -81,7 +81,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     public void callHosp(View view){
         String numeroEmergencia = "192";
-
         String uri = "tel:" + numeroEmergencia.trim() ;
         Intent intent = new Intent(Intent.ACTION_DIAL);
         intent.setData(Uri.parse(uri));
