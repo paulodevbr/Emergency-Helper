@@ -3,6 +3,7 @@ package app.com.bugdroidbuilder.paulo.emergencyhelper.view;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -18,10 +19,13 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import app.com.bugdroidbuilder.paulo.emergencyhelper.R;
+import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.PermissionHandler;
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,16 +88,34 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     public void callHosp(View view){
+        PermissionHandler permissionHandler = new PermissionHandler();
+        permissionHandler.requestPermissionCall(this);
+
         String numeroEmergencia = "192";
         String uri = "tel:" + numeroEmergencia.trim() ;
-        Intent intent = new Intent(Intent.ACTION_DIAL);
-        intent.setData(Uri.parse(uri));
-        try {
-            Toast.makeText(getApplicationContext(), "Ligando para SAMU", Toast.LENGTH_SHORT).show();
-            startActivity(intent);
-        }catch (SecurityException e){
+        final Intent intent;
 
+        if(PermissionHandler.permissionCall){
+            intent = new Intent(Intent.ACTION_CALL);
+
+        }else{
+            intent = new Intent(Intent.ACTION_DIAL);
         }
+        intent.setData(Uri.parse(uri));
+
+        new CountDownTimer(3200, 1000) {
+
+            public void onTick(long millisUntilFinished) {
+
+                Toast.makeText(getApplicationContext(), "Ligando em 3 segundos", Toast.LENGTH_SHORT).show();
+            }
+
+            public void onFinish() {
+                startActivity(intent);
+            }
+
+        }.start();
+
 
     }
 }
