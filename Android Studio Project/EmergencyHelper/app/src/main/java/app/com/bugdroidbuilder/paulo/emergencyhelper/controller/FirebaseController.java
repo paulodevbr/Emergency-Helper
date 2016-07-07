@@ -8,6 +8,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.Map;
+import java.util.Set;
 
 import app.com.bugdroidbuilder.paulo.emergencyhelper.model.Hospital;
 
@@ -18,9 +19,10 @@ public class FirebaseController {
 
     private static FirebaseDatabase fireDb = FirebaseDatabase.getInstance();
     private static FirebaseStorage fireSt = FirebaseStorage.getInstance();
+
     public static Hospital getHospital(String id){
 
-        HospitalListener listener = new HospitalListener();
+        HospitalSingleListener listener = new HospitalSingleListener();
         DatabaseReference captain = fireDb.getReference().child("Hospitais").child(id);
         captain.addValueEventListener(listener);
 
@@ -32,6 +34,24 @@ public class FirebaseController {
 
         return (listener.getInstance());
     }
+
+    public static Set<Hospital> getAllHospital(){
+
+        HospitalCollectionListener listener = new HospitalCollectionListener();
+        DatabaseReference captain = fireDb.getReference().child("Hospitais");
+        captain.addValueEventListener(listener);
+
+        try {
+            while (!listener.isGetData()) {
+                Thread.sleep(250);
+            }
+        }catch(InterruptedException e){
+            e.printStackTrace();
+        }
+
+        return( listener.getInstance());
+    }
+
 
     public static Bitmap getImageByHospital(Hospital hospital, String flag){
 
@@ -56,4 +76,5 @@ public class FirebaseController {
 
         return(bitListener.getInstance());
     }
+
 }

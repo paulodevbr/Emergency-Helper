@@ -2,23 +2,23 @@ package app.com.bugdroidbuilder.paulo.emergencyhelper.controller;
 
 import android.os.AsyncTask;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import app.com.bugdroidbuilder.paulo.emergencyhelper.model.Hospital;
 
 /**
  * Created by pedro on 26/06/16.
  */
-public class AsyncHospital extends AsyncTask< List<String>, Hospital, Void> {
+public class AsyncHospitalSingle extends AsyncTask<Set<String>, Hospital, Void> {
 
-    private List<Hospital> hospitalList = new ArrayList<>();
+    private Set<Hospital> hospitalList = new HashSet<>();
     public AsyncHospitalInterface delegate = null;
 
     @Override
-    protected Void doInBackground(List<String>... params) {
+    protected Void doInBackground(Set<String>... params) {
 
-        List<String> listaId = params[0];
+        Set<String> listaId = params[0];
 
         for(String id : listaId){
 
@@ -38,6 +38,6 @@ public class AsyncHospital extends AsyncTask< List<String>, Hospital, Void> {
 
     @Override
     protected void onPostExecute(Void avoid) {
-        delegate.processFinish(this.hospitalList);
+        delegate.processFinishHospital(this.hospitalList);
     }
 }

@@ -6,35 +6,44 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import app.com.bugdroidbuilder.paulo.emergencyhelper.R;
-import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.AsyncHospital;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.AsyncHospitalInterface;
+import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.AsyncHospitalSingle;
+import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.AsyncHospitalCollection;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.model.Hospital;
 
-public class MainActivity extends AppCompatActivity implements AsyncHospitalInterface{
+public class MainActivity extends AppCompatActivity implements AsyncHospitalInterface {
 
-    AsyncHospital asyncHospitalTask = new AsyncHospital();
+    AsyncHospitalCollection asyncHospitalCollection = new AsyncHospitalCollection();
+    AsyncHospitalSingle asyncHospitalSingle = new AsyncHospitalSingle();
+
+    Set<Hospital> hospitalSet = new HashSet<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        List<String> listaHosp = new ArrayList<>();
-        listaHosp.add("Hosp1");
+        //this.asyncHospitalCollection.setDelegate(this);
+        //this.asyncHospitalCollection.execute();
 
-        this.asyncHospitalTask.delegate = this;
-        this.asyncHospitalTask.execute(listaHosp);
+        Set<String> favoritos = new HashSet<>();
+        favoritos.add("Hosp1");
+
+        this.asyncHospitalSingle.delegate = this;
+        this.asyncHospitalSingle.execute(favoritos);
     }
 
     @Override
-    public void processFinish(List<Hospital> output) {
+    public void processFinishHospital(Set<Hospital> output) {
+
+        this.hospitalSet = output;
 
         TextView tv = (TextView) findViewById(R.id.hospitalName);
-        Hospital hospital = output.get(0);
+        Hospital hospital = (Hospital) output.toArray()[0];
         tv.setText(hospital.getNome());
 
 
@@ -42,10 +51,6 @@ public class MainActivity extends AppCompatActivity implements AsyncHospitalInte
         //ImageView imv = (ImageView) findViewById(R.id.image);
         //imv.setImageBitmap(bm);
     }
-
-
-
-
 
     public void goMap(View view){
         Intent myIntent = new Intent(this, MapsActivity.class);
