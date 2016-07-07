@@ -18,18 +18,34 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import app.com.bugdroidbuilder.paulo.emergencyhelper.R;
-import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.PermissionHandler;
+import java.util.HashSet;
+import java.util.Set;
 
-public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
+import app.com.bugdroidbuilder.paulo.emergencyhelper.R;
+import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.AsyncHospitalCollection;
+import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.AsyncHospitalInterface;
+import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.AsyncHospitalSingle;
+import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.FirebaseController;
+import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.HospitalController;
+import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.PermissionHandler;
+import app.com.bugdroidbuilder.paulo.emergencyhelper.model.Hospital;
+
+public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback, AsyncHospitalInterface {
 
     private GoogleMap mMap;
+    private AsyncHospitalCollection asyncHospitalCollection = new AsyncHospitalCollection();
+    private AsyncHospitalSingle asyncHospitalSingle = new AsyncHospitalSingle();
 
+    private Set<Hospital> hospitalSet = new HashSet<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+
+        // Obtendo todos os hospitais do banco
+        this.asyncHospitalCollection.setDelegate(this);
+        this.asyncHospitalCollection.execute();
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         MapFragment mapFragment = (MapFragment) getFragmentManager()
@@ -73,18 +89,17 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        int zoomInicial = 12;
-        double latitudeInicial = -16.6895498, longitudeInicial = -49.2650104;
 
         mMap = googleMap;
-        //-16.6895498,-49.2650104
+
+        int zoomInicial = 12;
+        double latitudeInicial = -16.6895498;
+        double longitudeInicial = -49.2650104;
+
         LatLng inf = new LatLng(latitudeInicial,longitudeInicial);
         MarkerOptions mark = new MarkerOptions().position(inf).title("teste");
 
-        //mMap.addMarker(mark);
-
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(inf, zoomInicial), 1500, null);
-
     }
 
     public void callHosp(View view){
@@ -116,6 +131,16 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         }.start();
 
+
+    }
+
+    @Override
+    public void processFinishHospital(Set<Hospital> output) {
+        this.hospitalSet = output;
+
+        for(Hospital hospital : this.hospitalSet) {
+            mMap.addMarker(HospitalController.getHospitalMark(hospital));
+        }
 
     }
 }

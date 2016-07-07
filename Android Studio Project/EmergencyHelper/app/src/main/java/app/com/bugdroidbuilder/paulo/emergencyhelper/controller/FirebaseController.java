@@ -32,6 +32,7 @@ public class FirebaseController {
             }
         }catch(InterruptedException e){}
 
+
         return (listener.getInstance());
     }
 
@@ -45,13 +46,10 @@ public class FirebaseController {
             while (!listener.isGetData()) {
                 Thread.sleep(250);
             }
-        }catch(InterruptedException e){
-            e.printStackTrace();
-        }
+        }catch(InterruptedException e){}
 
         return( listener.getInstance());
     }
-
 
     public static Bitmap getImageByHospital(Hospital hospital, String flag){
 
