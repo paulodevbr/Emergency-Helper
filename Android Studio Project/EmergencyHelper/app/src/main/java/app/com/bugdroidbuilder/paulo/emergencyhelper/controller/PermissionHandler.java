@@ -11,13 +11,14 @@ import android.support.v4.content.ContextCompat;
  */
 public class PermissionHandler implements ActivityCompat.OnRequestPermissionsResultCallback{
 
-    // para ativar a ligação direta no aplicativo
-    // descomente os usos da variável permissionCall
 
     public static boolean permissionCall = false;
+    public static boolean permissionLocal = false;
+
 
 
     private final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 0;
+    private final int MY_PERMISSIONS_REQUEST_LOCATION_FINE = 1;
 
     public void requestPermissionCall(Activity activity){
         if (ContextCompat.checkSelfPermission(activity,
@@ -45,8 +46,40 @@ public class PermissionHandler implements ActivityCompat.OnRequestPermissionsRes
                 // result of the request.
             }
         } else{
-        //DESCOMENTE AQUI
-        //PermissionHandler.permissionCall = true;
+
+        PermissionHandler.permissionCall = true;
+
+        }
+    }
+
+    public void requestPermissionLocation(Activity activity){
+        if (ContextCompat.checkSelfPermission(activity,
+                Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(activity,
+                    Manifest.permission.ACCESS_FINE_LOCATION)) {
+
+                // Show an expanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+
+            } else {
+
+                // No explanation needed, we can request the permission.
+
+                ActivityCompat.requestPermissions(activity,
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                        MY_PERMISSIONS_REQUEST_LOCATION_FINE);
+
+                // MY_PERMISSIONS_REQUEST_CALL_PHONE is an
+                // app-defined int constant. The callback method gets the
+                // result of the request.
+            }
+        } else{
+
+            PermissionHandler.permissionCall = true;
 
         }
     }
@@ -59,12 +92,25 @@ public class PermissionHandler implements ActivityCompat.OnRequestPermissionsRes
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    //DESCOMENTE AQUI
-                   // PermissionHandler.permissionCall = true;
+
+                   PermissionHandler.permissionCall = true;
 
                 } else {
-                    //DESCOMENTE AQUI
-                    //PermissionHandler.permissionCall = false;
+
+                    PermissionHandler.permissionCall = false;
+                }
+                return;
+            }
+            case MY_PERMISSIONS_REQUEST_LOCATION_FINE: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    PermissionHandler.permissionLocal = true;
+
+                } else {
+
+                    PermissionHandler.permissionLocal = false;
                 }
                 return;
             }

@@ -35,13 +35,16 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private GoogleMap mMap;
     private AsyncHospitalCollection asyncHospitalCollection = new AsyncHospitalCollection();
     private AsyncHospitalSingle asyncHospitalSingle = new AsyncHospitalSingle();
-
+    private PermissionHandler permissionHandler = new PermissionHandler();
     private Set<Hospital> hospitalSet = new HashSet<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+
+        permissionHandler.requestPermissionLocation(this);
+        permissionHandler.requestPermissionCall(this);
 
         // Obtendo todos os hospitais do banco
         this.asyncHospitalCollection.setDelegate(this);
@@ -103,8 +106,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     public void callHosp(View view){
-        PermissionHandler permissionHandler = new PermissionHandler();
-        permissionHandler.requestPermissionCall(this);
 
         String numeroEmergencia = "192";
         String uri = "tel:" + numeroEmergencia.trim() ;
@@ -131,16 +132,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         }.start();
 
-
-    }
-
-    @Override
-    public void processFinishHospital(Set<Hospital> output) {
-        this.hospitalSet = output;
-
-        for(Hospital hospital : this.hospitalSet) {
-            mMap.addMarker(HospitalController.getHospitalMark(hospital));
-        }
 
     }
 }
