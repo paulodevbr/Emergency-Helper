@@ -51,28 +51,4 @@ public class FirebaseController {
         return( listener.getInstance());
     }
 
-    public static Bitmap getImageByHospital(Hospital hospital, String flag){
-
-        StorageReference storageRegerence = fireSt.getReference().child("Hospitais")
-                .child(hospital.getStorageId());
-
-        Map<String,String> fotos = hospital.getFotos();
-        String link = fotos.get(flag);
-
-        storageRegerence = storageRegerence.child(link);
-
-        BitmapListener bitListener = new BitmapListener();
-
-        storageRegerence.getBytes(Long.MAX_VALUE).addOnSuccessListener(bitListener)
-                .addOnFailureListener(bitListener);
-
-        try {
-            while (!bitListener.isGetData()) {
-                Thread.sleep(250);
-            }
-        }catch(InterruptedException e){}
-
-        return(bitListener.getInstance());
-    }
-
 }

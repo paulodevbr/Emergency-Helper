@@ -1,6 +1,7 @@
 package app.com.bugdroidbuilder.paulo.emergencyhelper.view;
 
 import android.content.Intent;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -16,39 +17,27 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 
-import java.util.HashSet;
 import java.util.Set;
 
 import app.com.bugdroidbuilder.paulo.emergencyhelper.R;
-import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.AsyncHospitalCollection;
-import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.AsyncHospitalInterface;
-import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.AsyncHospitalSingle;
-import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.FirebaseController;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.HospitalController;
+import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.HospitalStorage;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.PermissionHandler;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.model.Hospital;
 
-public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback, AsyncHospitalInterface {
+public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-    private AsyncHospitalCollection asyncHospitalCollection = new AsyncHospitalCollection();
-    private AsyncHospitalSingle asyncHospitalSingle = new AsyncHospitalSingle();
     private PermissionHandler permissionHandler = new PermissionHandler();
-    private Set<Hospital> hospitalSet = new HashSet<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
-        permissionHandler.requestPermissionLocation(this);
         permissionHandler.requestPermissionCall(this);
-
-        // Obtendo todos os hospitais do banco
-        this.asyncHospitalCollection.setDelegate(this);
-        this.asyncHospitalCollection.execute();
+        permissionHandler.requestPermissionLocation(this);
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         MapFragment mapFragment = (MapFragment) getFragmentManager()
@@ -95,14 +84,16 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         mMap = googleMap;
 
-        int zoomInicial = 12;
-        double latitudeInicial = -16.6895498;
-        double longitudeInicial = -49.2650104;
+        Location myLocation = mMap.getMyLocation();
+        LatLng mylatlng = new LatLng(myLocation.getLatitude(),myLocation.getLongitude());
 
-        LatLng inf = new LatLng(latitudeInicial,longitudeInicial);
-        MarkerOptions mark = new MarkerOptions().position(inf).title("teste");
+        Set<Hospital> hospitalSet = HospitalStorage.getInstance().getStorage();
+        for(Hospital hospital : hospitalSet){
+            mMap.addMarker(HospitalController.getHospitalMark(hospital));
+        }
 
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(inf, zoomInicial), 1500, null);
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(mylatlng, 15), 1500, null);
+
     }
 
     public void callHosp(View view){

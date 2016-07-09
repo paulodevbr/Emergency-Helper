@@ -84,6 +84,8 @@ public class PermissionHandler implements ActivityCompat.OnRequestPermissionsRes
         }
     }
 
+
+
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
