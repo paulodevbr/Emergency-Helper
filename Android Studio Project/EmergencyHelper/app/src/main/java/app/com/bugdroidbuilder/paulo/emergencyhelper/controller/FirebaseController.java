@@ -8,6 +8,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.Map;
+import java.util.Set;
 
 import app.com.bugdroidbuilder.paulo.emergencyhelper.model.Hospital;
 
@@ -18,9 +19,10 @@ public class FirebaseController {
 
     private static FirebaseDatabase fireDb = FirebaseDatabase.getInstance();
     private static FirebaseStorage fireSt = FirebaseStorage.getInstance();
+
     public static Hospital getHospital(String id){
 
-        HospitalListener listener = new HospitalListener();
+        HospitalSingleListener listener = new HospitalSingleListener();
         DatabaseReference captain = fireDb.getReference().child("Hospitais").child(id);
         captain.addValueEventListener(listener);
 
@@ -30,30 +32,23 @@ public class FirebaseController {
             }
         }catch(InterruptedException e){}
 
+
         return (listener.getInstance());
     }
 
-    public static Bitmap getImageByHospital(Hospital hospital, String flag){
+    public static Set<Hospital> getAllHospital(){
 
-        StorageReference storageRegerence = fireSt.getReference().child("Hospitais")
-                .child(hospital.getStorageId());
-
-        Map<String,String> fotos = hospital.getFotos();
-        String link = fotos.get(flag);
-
-        storageRegerence = storageRegerence.child(link);
-
-        BitmapListener bitListener = new BitmapListener();
-
-        storageRegerence.getBytes(Long.MAX_VALUE).addOnSuccessListener(bitListener)
-                .addOnFailureListener(bitListener);
+        HospitalCollectionListener listener = new HospitalCollectionListener();
+        DatabaseReference captain = fireDb.getReference().child("Hospitais");
+        captain.addValueEventListener(listener);
 
         try {
-            while (!bitListener.isGetData()) {
+            while (!listener.isGetData()) {
                 Thread.sleep(250);
             }
         }catch(InterruptedException e){}
 
-        return(bitListener.getInstance());
+        return( listener.getInstance());
     }
+
 }
