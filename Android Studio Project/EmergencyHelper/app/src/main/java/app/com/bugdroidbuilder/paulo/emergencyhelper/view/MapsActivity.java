@@ -21,12 +21,14 @@ import com.google.android.gms.maps.model.LatLng;
 import java.util.Set;
 
 import app.com.bugdroidbuilder.paulo.emergencyhelper.R;
+import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.AsyncHospitalCollection;
+import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.AsyncHospitalInterface;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.HospitalController;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.HospitalStorage;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.PermissionHandler;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.model.Hospital;
 
-public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback ,AsyncHospitalInterface {
 
     private GoogleMap mMap;
     private PermissionHandler permissionHandler = new PermissionHandler();
@@ -87,10 +89,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         Location myLocation = mMap.getMyLocation();
         LatLng mylatlng = new LatLng(myLocation.getLatitude(),myLocation.getLongitude());
 
-        Set<Hospital> hospitalSet = HospitalStorage.getInstance().getStorage();
-        for(Hospital hospital : hospitalSet){
-            mMap.addMarker(HospitalController.getHospitalMark(hospital));
-        }
+        AsyncHospitalCollection asyncHospitalCollection= new AsyncHospitalCollection(mMap,this);
+        asyncHospitalCollection.execute();
 
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(mylatlng, 15), 1500, null);
 
@@ -122,7 +122,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
 
         }.start();
+    }
 
+    @Override
+    public void processFinishHospital(Set<Hospital> output) {
 
     }
 }

@@ -13,24 +13,15 @@ import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.AsyncHospitalInt
 import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.HospitalStorage;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.model.Hospital;
 
-public class MainActivity extends AppCompatActivity implements AsyncHospitalInterface{
+public class MainActivity extends AppCompatActivity{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        AsyncHospitalCollection asyncHospitalCollection= new AsyncHospitalCollection();
-        asyncHospitalCollection.setDelegate(this);
-        asyncHospitalCollection.execute();
-    }
-
-    @Override
-    public void processFinishHospital(Set<Hospital> output) {
-
-        HospitalStorage.getInstance().setStorage(output);
-
         Intent myIntent = new Intent(this, MapsActivity.class);
         this.startActivity(myIntent);
     }
+
 }

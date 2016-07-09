@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
 
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -70,7 +71,7 @@ public class HospitalController {
                 .position(position)
                 .title(hospital.getNome())
                 .snippet(hospital.getEndereco() + "\nTel: " + hospital.getTelefone())
-                .icon(BitmapDescriptorFactory.fromFile("iconGrade_" + hospital.getNota()));
+                .icon(BitmapDescriptorFactory.defaultMarker(iconTone));
 
         return(mark);
     }

@@ -1,4 +1,3 @@
 <resources>
-    <string name="google_maps_key_pedro" templateMergeStrategy="preserve" translatable="false">
-    AIzaSyAwLMnyfLimdBcPHLCIv8xZ-fxkdbn_2_Y</string>
+    <string name="google_maps_key_pedro" templateMergeStrategy="preserve" translatable="false">AIzaSyAwLMnyfLimdBcPHLCIv8xZ-fxkdbn_2_Y</string>
 </resources>

@@ -2,6 +2,10 @@ package app.com.bugdroidbuilder.paulo.emergencyhelper.controller;
 
 import android.os.AsyncTask;
 
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -13,10 +17,24 @@ import app.com.bugdroidbuilder.paulo.emergencyhelper.model.Hospital;
 public class AsyncHospitalCollection extends AsyncTask<Void, Hospital, Void> {
 
     private Set<Hospital> hospitalList = new HashSet<>();
-    private AsyncHospitalInterface delegate = null;
+    private AsyncHospitalInterface delegate;
+    private GoogleMap googleMap;
+
+    public AsyncHospitalCollection(){
+
+    }
+
+    public AsyncHospitalCollection(GoogleMap googleMap, AsyncHospitalInterface delegate){
+        this.googleMap = googleMap;
+        this.delegate = delegate;
+    }
 
     public void setDelegate(AsyncHospitalInterface delegate) {
         this.delegate = delegate;
+    }
+
+    public void setGoogleMap(GoogleMap googleMap) {
+        this.googleMap = googleMap;
     }
 
     @Override
@@ -37,6 +55,8 @@ public class AsyncHospitalCollection extends AsyncTask<Void, Hospital, Void> {
     protected void onProgressUpdate(Hospital... values) {
 
         // Insira o código do mapa aqui.
+        MarkerOptions marker = HospitalController.getHospitalMark(values[0]);
+        this.googleMap.addMarker(marker);
     }
 
     @Override
