@@ -33,8 +33,8 @@ public class HospitalController {
         MarkerOptions mark = new MarkerOptions()
                 .position(position)
                 .title(hospital.getNome())
-                .snippet(hospital.getEndereco() + "\nTel: " + hospital.getTelefone())
-                .icon(BitmapDescriptorFactory.fromFile("iconGrade_" + hospital.getNota()));
+                .snippet(hospital.getEndereco() + "\nTel: " + hospital.getTelefone());
+//                .icon(BitmapDescriptorFactory.fromFile("iconGrade_" + hospital.getNota()));
 
         return(mark);
     }
