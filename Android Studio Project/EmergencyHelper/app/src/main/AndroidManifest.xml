@@ -11,7 +11,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <uses-feature
@@ -49,6 +49,7 @@
         </activity>
         <activity android:name=".view.MapsActivity" />
         <activity android:name=".view.TelefonesUteisActivity" />
+        <activity android:name=".view.HospitalDescriptionActivity"></activity>
     </application>
 
 </manifest>

@@ -16,7 +16,9 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.Set;
 
@@ -24,6 +26,7 @@ import app.com.bugdroidbuilder.paulo.emergencyhelper.R;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.AsyncHospitalCollection;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.AsyncHospitalInterface;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.HospitalController;
+import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.HospitalMarkerClickListener;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.HospitalStorage;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.PermissionHandler;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.model.Hospital;
@@ -32,6 +35,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private GoogleMap mMap;
     private PermissionHandler permissionHandler = new PermissionHandler();
+    private MapFragment mapFragment;
+    private Set<Hospital> setHospital;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,13 +47,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         permissionHandler.requestPermissionLocation(this);
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        MapFragment mapFragment = (MapFragment) getFragmentManager()
+        mapFragment = (MapFragment) getFragmentManager()
                 .findFragmentById(R.id.map);
 
         final Toolbar toolbar = (Toolbar) findViewById(R.id.maps_toolbar);
         ToolbarSupport.startToolbar(this, toolbar, "Emergency Helper");
 
-        mapFragment.getMapAsync(this);
+        AsyncHospitalCollection asyncHospitalCollection = new AsyncHospitalCollection(this);
+        asyncHospitalCollection.execute();
     }
 
     @Override
@@ -86,14 +92,15 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         mMap = googleMap;
 
-        Location myLocation = mMap.getMyLocation();
-        LatLng mylatlng = new LatLng(myLocation.getLatitude(),myLocation.getLongitude());
+        LatLng mylatlng = new LatLng(12.555,-16.999);
 
-        AsyncHospitalCollection asyncHospitalCollection= new AsyncHospitalCollection(mMap,this);
-        asyncHospitalCollection.execute();
+        for(Hospital hospital : setHospital){
+            mMap.addMarker(HospitalController.getHospitalMark(hospital));
+        }
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(mylatlng, 1));
 
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(mylatlng, 15), 1500, null);
-
+        HospitalMarkerClickListener hospitalMarkerClickListener = new HospitalMarkerClickListener(setHospital,this);
+        mMap.setOnMarkerClickListener(hospitalMarkerClickListener);
     }
 
     public void callHosp(View view){
@@ -127,5 +134,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void processFinishHospital(Set<Hospital> output) {
 
+        this.setHospital = output;
+        mapFragment.getMapAsync(this);
     }
 }

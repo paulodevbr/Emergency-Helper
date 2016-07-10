@@ -17,23 +17,17 @@ public class AsyncHospitalSingle extends AsyncTask<Set<String>, Hospital, Void> 
 
     private Set<Hospital> hospitalList = new HashSet<>();
     private AsyncHospitalInterface delegate;
-    private GoogleMap googleMap;
 
     public AsyncHospitalSingle(){
 
     }
 
-    public AsyncHospitalSingle(GoogleMap googleMap, AsyncHospitalInterface delegate){
-        this.googleMap = googleMap;
+    public AsyncHospitalSingle(AsyncHospitalInterface delegate){
         this.delegate = delegate;
     }
 
     public void setDelegate(AsyncHospitalInterface delegate) {
         this.delegate = delegate;
-    }
-
-    public void setGoogleMap(GoogleMap googleMap) {
-        this.googleMap = googleMap;
     }
 
     @Override
@@ -54,8 +48,6 @@ public class AsyncHospitalSingle extends AsyncTask<Set<String>, Hospital, Void> 
     protected void onProgressUpdate(Hospital... values) {
 
         // Insira o código do mapa aqui.
-        MarkerOptions marker = HospitalController.getHospitalMark(values[0]);
-        this.googleMap.addMarker(marker);
     }
 
     @Override
