@@ -12,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -33,7 +34,7 @@ public class TelefonesUteisActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_telefones);
         final Toolbar toolbar = (Toolbar) findViewById(R.id.telefones_toolbar);
-        ToolbarSupport.startToolbarWithArrow(this, toolbar,"Telefones úteis");
+        ToolbarSupport.startToolbarWithArrow(this, toolbar, "Telefones úteis");
 
         PermissionHandler permissionHandler = new PermissionHandler();
         permissionHandler.requestPermissionCall(activity);
@@ -52,31 +53,39 @@ public class TelefonesUteisActivity extends AppCompatActivity {
             @Override
             public void onClick(View view, int position) {
 
+
                 TelefoneUtil telefoneUtil = listaTelefones.get(position);
-                String uri = "tel:" + telefoneUtil.getNumero().trim() ;
+                String uri = "tel:" + telefoneUtil.getNumero().trim();
                 final Intent intent;
 
-                if(PermissionHandler.permissionCall){
+                if (PermissionHandler.permissionCall) {
                     intent = new Intent(Intent.ACTION_CALL);
 
-                }else{
+                } else {
                     intent = new Intent(Intent.ACTION_DIAL);
                 }
 
                 intent.setData(Uri.parse(uri));
 
-                new CountDownTimer(3200, 1000) {
+                if (intent.getAction().equals(Intent.ACTION_CALL)) {
+                    final TextView textCountDown = (TextView) findViewById(R.id.text_count_down);
+                    textCountDown.setVisibility(View.VISIBLE);
 
-                    public void onTick(long millisUntilFinished) {
+                    new CountDownTimer(3100, 1000) {
 
-                        Toast.makeText(getApplicationContext(), "Ligando em 3 segundos", Toast.LENGTH_SHORT).show();
-                    }
+                        public void onTick(long millisUntilFinished) {
+                            String segundos = Long.toString(millisUntilFinished / 1000);
+                            textCountDown.setText(segundos);
+                        }
 
-                    public void onFinish() {
-                        startActivity(intent);
-                    }
+                        public void onFinish() {
+                            startActivity(intent);
+                        }
 
-                }.start();
+                    }.start();
+                }
+
+
             }
 
             @Override

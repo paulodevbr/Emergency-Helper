@@ -1,8 +1,8 @@
-<RelativeLayout android:layout_height="match_parent"
-    android:layout_width="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    >
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
     <android.support.v7.widget.Toolbar
         android:id="@+id/maps_toolbar"
         android:layout_width="match_parent"
@@ -18,38 +18,47 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.MapFragment"
-        android:layout_marginTop="?actionBarSize"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="?actionBarSize"
         tools:context=".view.MapsActivity" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:layout_marginBottom="16dp"
         android:layout_marginLeft="70dp"
-        android:layout_marginRight="70dp"
-        android:layout_marginBottom="16dp">
+        android:layout_marginRight="70dp">
+
         <android.support.design.widget.FloatingActionButton
 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/call_icon"
             android:layout_alignParentRight="true"
             android:layout_marginBottom="16dp"
             android:onClick="callHosp"
-            />
+            android:src="@drawable/call_icon"
+            android:visibility="visible" />
 
         <android.support.design.widget.FloatingActionButton
 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/navigate_icon"
+            android:layout_alignParentRight="true"
             android:layout_marginBottom="16dp"
-            android:layout_alignParentLeft="true"
-            />
-    </RelativeLayout>
+            android:background="@color/colorPrimaryDark"
+            android:src="@drawable/cancel_icon"
+            android:visibility="gone" />
 
+        <android.support.design.widget.FloatingActionButton
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_marginBottom="16dp"
+            android:src="@drawable/navigate_icon" />
+    </RelativeLayout>
 
 
 </RelativeLayout>

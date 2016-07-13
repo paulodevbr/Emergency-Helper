@@ -22,4 +22,32 @@
 
     <include layout="@layout/recycler_view_telefones" />
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/text_count_down"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/button_cancel_call"
+            android:layout_centerHorizontal="true"
+            android:text="Ligando em 3 "
+            android:textColor="@color/colorPrimary"
+            android:textSize="30sp" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/button_cancel_call"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="16dp"
+            android:layout_marginRight="16dp"
+            android:background="@color/colorPrimaryDark"
+            android:src="@drawable/cancel_icon"
+            android:visibility="visible" />
+    </RelativeLayout>
+
 </android.support.design.widget.CoordinatorLayout>

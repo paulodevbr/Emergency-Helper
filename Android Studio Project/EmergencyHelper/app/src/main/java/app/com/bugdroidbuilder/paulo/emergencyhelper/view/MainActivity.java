@@ -13,7 +13,7 @@ import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.AsyncHospitalInt
 import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.HospitalStorage;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.model.Hospital;
 
-public class MainActivity extends AppCompatActivity{
+public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

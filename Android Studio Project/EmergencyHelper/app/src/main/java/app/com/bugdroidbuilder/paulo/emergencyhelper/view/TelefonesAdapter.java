@@ -19,17 +19,6 @@ public class TelefonesAdapter extends RecyclerView.Adapter<TelefonesAdapter.MyVi
 
     private List<TelefoneUtil> listaTelefones;
 
-    public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView descricao;
-
-        public MyViewHolder(View view) {
-            super(view);
-            descricao = (TextView) view.findViewById(R.id.telefones_descricao);
-
-        }
-    }
-
-
     public TelefonesAdapter(List<TelefoneUtil> listaTelefones) {
         this.listaTelefones = listaTelefones;
     }
@@ -51,5 +40,15 @@ public class TelefonesAdapter extends RecyclerView.Adapter<TelefonesAdapter.MyVi
     @Override
     public int getItemCount() {
         return listaTelefones.size();
+    }
+
+    public class MyViewHolder extends RecyclerView.ViewHolder {
+        public TextView descricao;
+
+        public MyViewHolder(View view) {
+            super(view);
+            descricao = (TextView) view.findViewById(R.id.telefones_descricao);
+
+        }
     }
 }

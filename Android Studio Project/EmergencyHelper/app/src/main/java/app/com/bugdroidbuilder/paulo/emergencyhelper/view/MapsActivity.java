@@ -31,7 +31,7 @@ import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.HospitalStorage;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.PermissionHandler;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.model.Hospital;
 
-public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback ,AsyncHospitalInterface {
+public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback, AsyncHospitalInterface {
 
     private GoogleMap mMap;
     private PermissionHandler permissionHandler = new PermissionHandler();
@@ -92,27 +92,27 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         mMap = googleMap;
 
-        LatLng mylatlng = new LatLng(12.555,-16.999);
+        LatLng mylatlng = new LatLng(12.555, -16.999);
 
-        for(Hospital hospital : setHospital){
+        for (Hospital hospital : setHospital) {
             mMap.addMarker(HospitalController.getHospitalMark(hospital));
         }
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(mylatlng, 1));
 
-        HospitalMarkerClickListener hospitalMarkerClickListener = new HospitalMarkerClickListener(setHospital,this);
+        HospitalMarkerClickListener hospitalMarkerClickListener = new HospitalMarkerClickListener(setHospital, this);
         mMap.setOnMarkerClickListener(hospitalMarkerClickListener);
     }
 
-    public void callHosp(View view){
+    public void callHosp(View view) {
 
         String numeroEmergencia = "192";
-        String uri = "tel:" + numeroEmergencia.trim() ;
+        String uri = "tel:" + numeroEmergencia.trim();
         final Intent intent;
 
-        if(PermissionHandler.permissionCall){
+        if (PermissionHandler.permissionCall) {
             intent = new Intent(Intent.ACTION_CALL);
 
-        }else{
+        } else {
             intent = new Intent(Intent.ACTION_DIAL);
         }
         intent.setData(Uri.parse(uri));
@@ -127,6 +127,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             public void onFinish() {
                 startActivity(intent);
             }
+
 
         }.start();
     }

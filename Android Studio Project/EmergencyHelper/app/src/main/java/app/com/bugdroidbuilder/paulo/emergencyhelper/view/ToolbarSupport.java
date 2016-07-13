@@ -15,11 +15,12 @@ public class ToolbarSupport {
 
     /**
      * start a toolbar with an arrow button back with actionBar support
+     *
      * @param activity activity opening the toolbar
-     * @param toolbar toolbar object
-     * @param title title on the toolbar
+     * @param toolbar  toolbar object
+     * @param title    title on the toolbar
      */
-    public static void startToolbarWithArrow(AppCompatActivity activity, Toolbar toolbar, String title){
+    public static void startToolbarWithArrow(AppCompatActivity activity, Toolbar toolbar, String title) {
         activity.setSupportActionBar(toolbar);
         toolbar.setTitle(title);
 
@@ -33,11 +34,12 @@ public class ToolbarSupport {
 
     /**
      * start a simple toolbar with  with actionBar support
+     *
      * @param activity activity opening the toolbar
-     * @param toolbar toolbar object
-     * @param title title on the toolbar
+     * @param toolbar  toolbar object
+     * @param title    title on the toolbar
      */
-    public static void startToolbar(AppCompatActivity activity, Toolbar toolbar, String title){
+    public static void startToolbar(AppCompatActivity activity, Toolbar toolbar, String title) {
         activity.setSupportActionBar(toolbar);
         toolbar.setTitle(title);
 
