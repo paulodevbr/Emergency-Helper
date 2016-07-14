@@ -23,6 +23,7 @@
     <include layout="@layout/recycler_view_telefones" />
 
     <RelativeLayout
+        android:id="@+id/count_down_ligacao"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone">
@@ -33,7 +34,6 @@
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/button_cancel_call"
             android:layout_centerHorizontal="true"
-            android:text="Ligando em 3 "
             android:textColor="@color/colorPrimary"
             android:textSize="30sp" />
 
@@ -45,9 +45,10 @@
             android:layout_alignParentRight="true"
             android:layout_marginBottom="16dp"
             android:layout_marginRight="16dp"
-            android:background="@color/colorPrimaryDark"
+
             android:src="@drawable/cancel_icon"
-            android:visibility="visible" />
+            android:onClick="cancelarLigacao"/>
+
     </RelativeLayout>
 
 </android.support.design.widget.CoordinatorLayout>

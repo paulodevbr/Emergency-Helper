@@ -38,17 +38,16 @@
             android:value="@integer/google_play_services_version" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_maps_key_pedro" />
+            android:value="@string/google_maps_key_paulo_desktop" />
 
-        <activity android:name=".view.MainActivity">
+        <activity android:name=".view.MapsActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.MapsActivity" />
-        <activity android:name=".view.TelefonesUteisActivity" />
+        <activity android:name=".view.TelefonesUteisActivity" android:theme="@style/TelefonesUteisTheme" />
+
         <activity android:name=".view.HospitalDescriptionActivity"></activity>
     </application>
 

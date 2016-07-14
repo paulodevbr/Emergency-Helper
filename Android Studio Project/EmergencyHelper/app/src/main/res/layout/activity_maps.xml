@@ -49,7 +49,8 @@
             android:layout_marginBottom="16dp"
             android:background="@color/colorPrimaryDark"
             android:src="@drawable/cancel_icon"
-            android:visibility="gone" />
+            android:visibility="gone"
+            android:onClick="cancelarLigacao"/>
 
         <android.support.design.widget.FloatingActionButton
 

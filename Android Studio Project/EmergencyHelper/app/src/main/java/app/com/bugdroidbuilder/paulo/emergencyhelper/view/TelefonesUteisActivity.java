@@ -12,8 +12,11 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,11 +26,12 @@ import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.PermissionHandle
 import app.com.bugdroidbuilder.paulo.emergencyhelper.model.TelefoneUtil;
 
 public class TelefonesUteisActivity extends AppCompatActivity {
-
+    private boolean cancelaLigacao = false;
     private List<TelefoneUtil> listaTelefones = new ArrayList<>();
     private RecyclerView recyclerView;
     private TelefonesAdapter mAdapter;
     private Activity activity = this;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,22 +71,10 @@ public class TelefonesUteisActivity extends AppCompatActivity {
 
                 intent.setData(Uri.parse(uri));
 
-                if (intent.getAction().equals(Intent.ACTION_CALL)) {
-                    final TextView textCountDown = (TextView) findViewById(R.id.text_count_down);
-                    textCountDown.setVisibility(View.VISIBLE);
+                boolean fazerLigacao = TelefoneHandler.ligar(getParent(),intent);
 
-                    new CountDownTimer(3100, 1000) {
-
-                        public void onTick(long millisUntilFinished) {
-                            String segundos = Long.toString(millisUntilFinished / 1000);
-                            textCountDown.setText(segundos);
-                        }
-
-                        public void onFinish() {
-                            startActivity(intent);
-                        }
-
-                    }.start();
+                if(fazerLigacao){
+                    startActivity(intent);
                 }
 
 
@@ -109,6 +101,11 @@ public class TelefonesUteisActivity extends AppCompatActivity {
 
         mAdapter.notifyDataSetChanged();
 
+    }
+
+    public void cancelarLigacao(View view){
+
+        TelefoneHandler.cancelarLigacao();
     }
 
     @Override

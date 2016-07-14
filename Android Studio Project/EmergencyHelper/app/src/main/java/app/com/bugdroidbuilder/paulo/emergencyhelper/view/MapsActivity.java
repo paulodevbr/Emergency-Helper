@@ -117,19 +117,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
         intent.setData(Uri.parse(uri));
 
-        new CountDownTimer(3200, 1000) {
+        boolean fazerLigacao = TelefoneHandler.ligar(this,intent);
 
-            public void onTick(long millisUntilFinished) {
-
-                Toast.makeText(getApplicationContext(), "Ligando em 3 segundos", Toast.LENGTH_SHORT).show();
-            }
-
-            public void onFinish() {
-                startActivity(intent);
-            }
-
-
-        }.start();
+        if(fazerLigacao){
+            startActivity(intent);
+        }
     }
 
     @Override
