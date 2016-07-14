@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,11 +11,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,6 +47,7 @@ public class TelefonesUteisActivity extends AppCompatActivity {
 
         prepareTelefoneData();
 
+
         recyclerView.addOnItemTouchListener(new RecyclerViewListener.RecyclerTouchListener(getApplicationContext(), recyclerView, new RecyclerViewListener.ClickListener() {
             @Override
             public void onClick(View view, int position) {
@@ -71,11 +66,7 @@ public class TelefonesUteisActivity extends AppCompatActivity {
 
                 intent.setData(Uri.parse(uri));
 
-                boolean fazerLigacao = TelefoneHandler.ligar(getParent(),intent);
-
-                if(fazerLigacao){
-                    startActivity(intent);
-                }
+                TelefoneHandler.ligarEmergencia(activity,intent, R.id.fab_cancel_telefones, R.id.text_count_down_telefones);
 
 
             }

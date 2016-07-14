@@ -3,36 +3,39 @@ package app.com.bugdroidbuilder.paulo.emergencyhelper.view;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.CountDownTimer;
+import android.support.design.widget.FloatingActionButton;
 import android.view.View;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import app.com.bugdroidbuilder.paulo.emergencyhelper.R;
 
 /**
  * Created by paulo on 13/07/16.
  */
 public class TelefoneHandler {
-
+    private static int TEMPO_CONTAGEM = 5000;
     private static boolean cancelaLigacao = false;
     private static boolean efetuarLigacao = false;
 
-    public static boolean ligar(Activity activity, Intent intent){
 
+    public static void ligarEmergencia(final Activity activity, final Intent intent, int fabId, int msgId) {
+        efetuarLigacao = false;
         if (intent.getAction().equals(Intent.ACTION_CALL)) {
-            final RelativeLayout layout = (RelativeLayout) activity.findViewById(R.id.count_down_ligacao);
-            layout.setVisibility(View.VISIBLE);
+            final FloatingActionButton fab = (FloatingActionButton) activity.findViewById(fabId);
 
-            final TextView text = (TextView) activity.findViewById(R.id.text_count_down);
 
-            new CountDownTimer(3000, 100) {
+            fab.show();
+
+            final TextView text = (TextView) activity.findViewById(msgId);
+            text.setVisibility(View.VISIBLE);
+
+            new CountDownTimer(TEMPO_CONTAGEM, 100) {
 
                 public void onTick(long millisUntilFinished) {
-                    String segundos = Long.toString((millisUntilFinished / 1000)+1);
+                    String segundos = Long.toString((millisUntilFinished / 1000) + 1);
                     text.setText(segundos);
 
-                    if(cancelaLigacao){
-                        layout.setVisibility(View.GONE);
+                    if (cancelaLigacao) {
+                        fab.hide();
+                        text.setVisibility(View.GONE);
                         cancelaLigacao = false;
                         efetuarLigacao = false;
                         cancel();
@@ -40,17 +43,23 @@ public class TelefoneHandler {
                 }
 
                 public void onFinish() {
-                    layout.setVisibility(View.GONE);
-                    efetuarLigacao = true;
+                    fab.hide();
+
+                    text.setVisibility(View.GONE);
+                    activity.startActivity(intent);
                 }
 
             }.start();
 
-    }
-        return efetuarLigacao;
+        } else {
+            activity.startActivity(intent);
+        }
 
-}
-    public static void cancelarLigacao(){
+
+    }
+
+
+    public static void cancelarLigacao() {
         cancelaLigacao = true;
     }
 

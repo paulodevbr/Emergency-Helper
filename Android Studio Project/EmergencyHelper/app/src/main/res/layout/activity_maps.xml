@@ -37,17 +37,28 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_marginBottom="16dp"
-            android:onClick="callHosp"
+            android:onClick="emergencia"
             android:src="@drawable/call_icon"
             android:visibility="visible" />
 
-        <android.support.design.widget.FloatingActionButton
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/text_count_down_maps"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/fab_cancel_maps"
+            android:layout_centerHorizontal="true"
+            android:textColor="@color/colorPrimary"
+            android:visibility="gone"
+            android:textSize="30sp" />
 
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab_cancel_maps"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_marginBottom="16dp"
-            android:background="@color/colorPrimaryDark"
+            app:backgroundTint="@color/colorPrimaryDark"
             android:src="@drawable/cancel_icon"
             android:visibility="gone"
             android:onClick="cancelarLigacao"/>

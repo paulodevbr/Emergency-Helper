@@ -26,27 +26,29 @@
         android:id="@+id/count_down_ligacao"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone">
+
+        android:animateLayoutChanges="true">
 
         <android.support.v7.widget.AppCompatTextView
-            android:id="@+id/text_count_down"
+            android:id="@+id/text_count_down_telefones"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/button_cancel_call"
+            android:layout_alignBottom="@+id/fab_cancel_telefones"
             android:layout_centerHorizontal="true"
             android:textColor="@color/colorPrimary"
+            android:visibility="gone"
             android:textSize="30sp" />
 
         <android.support.design.widget.FloatingActionButton
-            android:id="@+id/button_cancel_call"
+            android:id="@+id/fab_cancel_telefones"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:layout_marginBottom="16dp"
             android:layout_marginRight="16dp"
-
-            android:src="@drawable/cancel_icon"
+            android:visibility="gone"
+            android:src ="@drawable/cancel_icon"
             android:onClick="cancelarLigacao"/>
 
     </RelativeLayout>

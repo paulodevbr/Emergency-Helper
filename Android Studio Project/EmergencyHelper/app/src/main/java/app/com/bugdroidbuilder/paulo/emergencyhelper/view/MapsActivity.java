@@ -1,24 +1,19 @@
 package app.com.bugdroidbuilder.paulo.emergencyhelper.view;
 
 import android.content.Intent;
-import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.Set;
 
@@ -27,7 +22,6 @@ import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.AsyncHospitalCol
 import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.AsyncHospitalInterface;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.HospitalController;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.HospitalMarkerClickListener;
-import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.HospitalStorage;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.PermissionHandler;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.model.Hospital;
 
@@ -103,7 +97,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mMap.setOnMarkerClickListener(hospitalMarkerClickListener);
     }
 
-    public void callHosp(View view) {
+    public void emergencia(View view) {
 
         String numeroEmergencia = "192";
         String uri = "tel:" + numeroEmergencia.trim();
@@ -117,11 +111,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
         intent.setData(Uri.parse(uri));
 
-        boolean fazerLigacao = TelefoneHandler.ligar(this,intent);
+       TelefoneHandler.ligarEmergencia(this,intent, R.id.fab_cancel_maps, R.id.text_count_down_maps);
 
-        if(fazerLigacao){
-            startActivity(intent);
-        }
+
+    }
+    public void cancelarLigacao(View view){
+
+        TelefoneHandler.cancelarLigacao();
     }
 
     @Override
