@@ -38,7 +38,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         setContentView(R.layout.activity_maps);
 
         permissionHandler.requestPermissionCall(this);
-        permissionHandler.requestPermissionLocation(this);
+
+
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         mapFragment = (MapFragment) getFragmentManager()
@@ -83,15 +84,17 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        permissionHandler.requestPermissionLocation(this);
 
+        int zoomInicial = 12;
         mMap = googleMap;
 
-        LatLng mylatlng = new LatLng(12.555, -16.999);
+        LatLng mylatlng = new LatLng(-16.6871724,-49.257001);
 
         for (Hospital hospital : setHospital) {
-            mMap.addMarker(HospitalController.getHospitalMark(hospital));
+            mMap.addMarker(HospitalController.getHospitalMark(this, hospital));
         }
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(mylatlng, 1));
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(mylatlng, zoomInicial), 1500, null);
 
         HospitalMarkerClickListener hospitalMarkerClickListener = new HospitalMarkerClickListener(setHospital, this);
         mMap.setOnMarkerClickListener(hospitalMarkerClickListener);

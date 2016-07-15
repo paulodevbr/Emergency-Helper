@@ -1,40 +1,25 @@
 package app.com.bugdroidbuilder.paulo.emergencyhelper.controller;
 
-import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
-import android.util.Log;
+import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
 
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import app.com.bugdroidbuilder.paulo.emergencyhelper.R;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.model.Hospital;
-import app.com.bugdroidbuilder.paulo.emergencyhelper.model.TelefoneUtil;
 
 /**
  * Created by pedro on 26/06/16.
  */
 public class HospitalController {
 
-    public static void callHospital(Hospital hospital, Context context) {
 
-        String uri = "tel:" + hospital.getTelefone().trim() ;
-        final Intent intent;
-
-        if(PermissionHandler.permissionCall){
-            intent = new Intent(Intent.ACTION_CALL);
-
-        }else{
-            intent = new Intent(Intent.ACTION_DIAL);
-        }
-
-        intent.setData(Uri.parse(uri));
-        context.startActivity(intent);
-    }
-
-    public static MarkerOptions getHospitalMark(Hospital hospital){
+    public static MarkerOptions getHospitalMark(Activity activity, Hospital hospital){
 
         float iconTone;
         switch(hospital.getNota()){
@@ -66,12 +51,22 @@ public class HospitalController {
                 iconTone = BitmapDescriptorFactory.HUE_AZURE;
         }
 
+
+        Drawable circle = activity.getResources().getDrawable(R.drawable.place_hospital);
+        Canvas canvas = new Canvas();
+        Bitmap bitmap = Bitmap.createBitmap(circle.getIntrinsicWidth(), circle.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        canvas.setBitmap(bitmap);
+        circle.setBounds(0, 0, circle.getIntrinsicWidth(), circle.getIntrinsicHeight());
+        circle.draw(canvas);
+
+
         LatLng position = new LatLng(hospital.getLatitude(), hospital.getLongitude());
+        BitmapDescriptor icon = BitmapDescriptorFactory.fromBitmap(bitmap);
         MarkerOptions mark = new MarkerOptions()
                 .position(position)
                 .title(hospital.getNome())
                 .snippet(hospital.getEndereco() + "\nTel: " + hospital.getTelefone())
-                .icon(BitmapDescriptorFactory.defaultMarker(iconTone));
+                .icon(icon);
 
         return(mark);
     }
