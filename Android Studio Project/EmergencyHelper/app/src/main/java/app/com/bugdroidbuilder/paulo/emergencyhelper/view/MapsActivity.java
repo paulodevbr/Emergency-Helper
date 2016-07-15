@@ -1,5 +1,6 @@
 package app.com.bugdroidbuilder.paulo.emergencyhelper.view;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -26,7 +27,7 @@ import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.PermissionHandle
 import app.com.bugdroidbuilder.paulo.emergencyhelper.model.Hospital;
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback, AsyncHospitalInterface {
-
+    private Activity activity = this;
     private GoogleMap mMap;
     private PermissionHandler permissionHandler = new PermissionHandler();
     private MapFragment mapFragment;
@@ -39,8 +40,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         permissionHandler.requestPermissionCall(this);
 
-
-
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         mapFragment = (MapFragment) getFragmentManager()
                 .findFragmentById(R.id.map);
@@ -50,6 +49,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         AsyncHospitalCollection asyncHospitalCollection = new AsyncHospitalCollection(this);
         asyncHospitalCollection.execute();
+        activity = this;
     }
 
     @Override
@@ -114,7 +114,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
         intent.setData(Uri.parse(uri));
 
-       TelefoneHandler.ligarEmergencia(this,intent, R.id.fab_cancel_maps, R.id.text_count_down_maps);
+       TelefoneHandler.ligarEmergencia(activity,intent, R.id.fab_cancel_maps, R.id.text_count_down_maps);
 
 
     }
