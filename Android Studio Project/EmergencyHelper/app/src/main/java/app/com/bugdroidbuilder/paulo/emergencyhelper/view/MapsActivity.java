@@ -29,7 +29,7 @@ import app.com.bugdroidbuilder.paulo.emergencyhelper.model.Hospital;
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback, AsyncHospitalInterface {
     private Activity activity = this;
     private GoogleMap mMap;
-    private PermissionHandler permissionHandler = new PermissionHandler();
+    private final PermissionHandler permissionHandler = new PermissionHandler();
     private MapFragment mapFragment;
     private Set<Hospital> setHospital;
 
@@ -38,7 +38,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
-        permissionHandler.requestPermissionCall(this);
+        permissionHandler.requestPermissionNetworkState(this);
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         mapFragment = (MapFragment) getFragmentManager()
@@ -101,6 +101,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     public void emergencia(View view) {
+        permissionHandler.requestPermissionCall(this);
 
         String numeroEmergencia = "192";
         String uri = "tel:" + numeroEmergencia.trim();

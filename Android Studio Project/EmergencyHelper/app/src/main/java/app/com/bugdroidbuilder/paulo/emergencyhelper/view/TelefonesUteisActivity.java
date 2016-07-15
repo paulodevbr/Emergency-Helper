@@ -23,6 +23,7 @@ public class TelefonesUteisActivity extends AppCompatActivity {
     private boolean cancelaLigacao = false;
     private List<TelefoneUtil> listaTelefones = new ArrayList<>();
     private RecyclerView recyclerView;
+    private final PermissionHandler permissionHandler = new PermissionHandler();
     private TelefonesAdapter mAdapter;
     private Activity activity = this;
 
@@ -34,7 +35,7 @@ public class TelefonesUteisActivity extends AppCompatActivity {
         final Toolbar toolbar = (Toolbar) findViewById(R.id.telefones_toolbar);
         ToolbarSupport.startToolbarWithArrow(this, toolbar, "Telefones úteis");
 
-        PermissionHandler permissionHandler = new PermissionHandler();
+
         permissionHandler.requestPermissionCall(activity);
 
         recyclerView = (RecyclerView) findViewById(R.id.list_telefones);

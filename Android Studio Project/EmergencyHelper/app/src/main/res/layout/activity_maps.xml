@@ -45,11 +45,14 @@
             android:id="@+id/text_count_down_maps"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingRight="4dp"
+            android:paddingLeft="4dp"
             android:layout_alignBottom="@+id/fab_cancel_maps"
             android:layout_centerHorizontal="true"
             android:textColor="@color/colorPrimary"
             android:visibility="gone"
-            android:textSize="30sp" />
+            android:textSize="30sp"
+            android:background="@color/colorTitleText"/>
 
 
         <android.support.design.widget.FloatingActionButton
