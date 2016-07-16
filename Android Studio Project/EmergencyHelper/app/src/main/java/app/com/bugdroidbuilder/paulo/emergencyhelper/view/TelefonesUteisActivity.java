@@ -67,7 +67,7 @@ public class TelefonesUteisActivity extends AppCompatActivity {
 
                 intent.setData(Uri.parse(uri));
 
-                TelefoneHandler.ligarEmergencia(activity,intent, R.id.fab_cancel_telefones, R.id.text_count_down_telefones);
+                TelefoneHandler.ligarEmergencia(activity,intent,R.id.popup_telefones, R.id.fab_cancel_telefones, R.id.text_count_down_telefones);
 
 
             }

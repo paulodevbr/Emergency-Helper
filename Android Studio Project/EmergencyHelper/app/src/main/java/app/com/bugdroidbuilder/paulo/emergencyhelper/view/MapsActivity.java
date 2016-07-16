@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -33,6 +34,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private MapFragment mapFragment;
     private Set<Hospital> setHospital;
 
+    private FloatingActionButton fabCall ;
+    private FloatingActionButton fabNavigate;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +50,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         final Toolbar toolbar = (Toolbar) findViewById(R.id.maps_toolbar);
         ToolbarSupport.startToolbar(this, toolbar, "Emergency Helper");
+        fabCall = (FloatingActionButton) findViewById(R.id.fab_call);
+        fabNavigate = (FloatingActionButton) findViewById(R.id.fab_navigate);
 
         AsyncHospitalCollection asyncHospitalCollection = new AsyncHospitalCollection(this);
         asyncHospitalCollection.execute();
@@ -62,14 +68,18 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-
-
+        hideButtons();
         if (id == R.id.menu_telefones_uteis) {
             startActivity(new Intent(this, TelefonesUteisActivity.class));
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+    @Override
+    public void onResume(){
+        super.onResume();
+        showButtons();
     }
 
 
@@ -101,6 +111,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     public void emergencia(View view) {
+        FloatingActionButton fabCall = (FloatingActionButton) findViewById(R.id.fab_call);
+        FloatingActionButton fabNavigate = (FloatingActionButton) findViewById(R.id.fab_navigate);
+
+        hideButtons();
+
         permissionHandler.requestPermissionCall(this);
 
         String numeroEmergencia = "192";
@@ -115,12 +130,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
         intent.setData(Uri.parse(uri));
 
-       TelefoneHandler.ligarEmergencia(activity,intent, R.id.fab_cancel_maps, R.id.text_count_down_maps);
+       TelefoneHandler.ligarEmergencia(activity,intent, R.id.popup_ligacao, R.id.fab_cancel_maps, R.id.text_count_down_maps);
 
 
     }
     public void cancelarLigacao(View view){
-
+        showButtons();
         TelefoneHandler.cancelarLigacao();
     }
 
@@ -129,5 +144,15 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         this.setHospital = output;
         mapFragment.getMapAsync(this);
+    }
+
+    public void hideButtons(){
+        fabCall.hide();
+        fabNavigate.hide();
+    }
+
+    public void showButtons(){
+        fabNavigate.show();
+        fabCall.show();
     }
 }

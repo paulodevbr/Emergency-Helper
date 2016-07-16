@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.CountDownTimer;
 import android.support.design.widget.FloatingActionButton;
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 /**
@@ -16,12 +17,14 @@ public class TelefoneHandler {
     private static boolean efetuarLigacao = false;
 
 
-    public static void ligarEmergencia(final Activity activity, final Intent intent, int fabId, int msgId) {
+    public static void ligarEmergencia(final Activity activity, final Intent intent, int popupId,
+                                       int fabId, int msgId) {
         efetuarLigacao = false;
         if (intent.getAction().equals(Intent.ACTION_CALL)) {
+            final RelativeLayout popup = (RelativeLayout) activity.findViewById(popupId);
+            popup.setVisibility(View.VISIBLE);
+
             final FloatingActionButton fab = (FloatingActionButton) activity.findViewById(fabId);
-
-
             fab.show();
 
             final TextView text = (TextView) activity.findViewById(msgId);
@@ -36,6 +39,7 @@ public class TelefoneHandler {
                     if (cancelaLigacao) {
                         fab.hide();
                         text.setVisibility(View.GONE);
+                        popup.setVisibility(View.GONE);
                         cancelaLigacao = false;
                         efetuarLigacao = false;
                         cancel();
@@ -44,8 +48,8 @@ public class TelefoneHandler {
 
                 public void onFinish() {
                     fab.hide();
-
                     text.setVisibility(View.GONE);
+                    popup.setVisibility(View.GONE);
                     activity.startActivity(intent);
                 }
 
