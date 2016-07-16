@@ -26,21 +26,29 @@ import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.HospitalControll
 import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.HospitalMarkerClickListener;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.PermissionHandler;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.model.Hospital;
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback, AsyncHospitalInterface {
+    private final PermissionHandler permissionHandler = new PermissionHandler();
+    @Bind(R.id.fab_call)
+    FloatingActionButton fabCall;
+    @Bind(R.id.fab_navigate)
+    FloatingActionButton fabNavigate;
+    @Bind(R.id.fab_cancel_maps)
+    FloatingActionButton fabCancel;
     private Activity activity = this;
     private GoogleMap mMap;
-    private final PermissionHandler permissionHandler = new PermissionHandler();
     private MapFragment mapFragment;
     private Set<Hospital> setHospital;
-
-    private FloatingActionButton fabCall ;
-    private FloatingActionButton fabNavigate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_maps);
+        ButterKnife.bind(this);
+
 
         permissionHandler.requestPermissionNetworkState(this);
 
@@ -50,13 +58,28 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         final Toolbar toolbar = (Toolbar) findViewById(R.id.maps_toolbar);
         ToolbarSupport.startToolbar(this, toolbar, "Emergency Helper");
-        fabCall = (FloatingActionButton) findViewById(R.id.fab_call);
-        fabNavigate = (FloatingActionButton) findViewById(R.id.fab_navigate);
+
+        fabCall.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                emergencia();
+            }
+        });
+
+        fabCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cancelarLigacao();
+            }
+        });
+
+
 
         AsyncHospitalCollection asyncHospitalCollection = new AsyncHospitalCollection(this);
         asyncHospitalCollection.execute();
         activity = this;
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -76,8 +99,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         return super.onOptionsItemSelected(item);
     }
+
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
         showButtons();
     }
@@ -99,7 +123,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         int zoomInicial = 12;
         mMap = googleMap;
 
-        LatLng mylatlng = new LatLng(-16.6871724,-49.257001);
+        LatLng mylatlng = new LatLng(-16.6871724, -49.257001);
 
         for (Hospital hospital : setHospital) {
             mMap.addMarker(HospitalController.getHospitalMark(this, hospital));
@@ -110,9 +134,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mMap.setOnMarkerClickListener(hospitalMarkerClickListener);
     }
 
-    public void emergencia(View view) {
-        FloatingActionButton fabCall = (FloatingActionButton) findViewById(R.id.fab_call);
-        FloatingActionButton fabNavigate = (FloatingActionButton) findViewById(R.id.fab_navigate);
+
+
+    public void emergencia() {
 
         hideButtons();
 
@@ -130,11 +154,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
         intent.setData(Uri.parse(uri));
 
-       TelefoneHandler.ligarEmergencia(activity,intent, R.id.popup_ligacao, R.id.fab_cancel_maps, R.id.text_count_down_maps);
+        TelefoneHandler.ligarEmergencia(activity, intent, R.id.popup_ligacao, R.id.fab_cancel_maps, R.id.text_count_down_maps);
 
 
     }
-    public void cancelarLigacao(View view){
+
+    public void cancelarLigacao() {
         showButtons();
         TelefoneHandler.cancelarLigacao();
     }
@@ -146,12 +171,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mapFragment.getMapAsync(this);
     }
 
-    public void hideButtons(){
+    public void hideButtons() {
         fabCall.hide();
         fabNavigate.hide();
     }
 
-    public void showButtons(){
+    public void showButtons() {
         fabNavigate.show();
         fabCall.show();
     }

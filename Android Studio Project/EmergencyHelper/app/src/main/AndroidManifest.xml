@@ -47,7 +47,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.TelefonesUteisActivity" android:theme="@style/TelefonesUteisTheme" />
+        <activity android:name=".view.TelefonesUteisActivity" />
 
         <activity android:name=".view.HospitalDescriptionActivity"></activity>
     </application>

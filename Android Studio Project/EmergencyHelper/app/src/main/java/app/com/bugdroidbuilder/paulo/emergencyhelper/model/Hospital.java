@@ -24,6 +24,12 @@ public class Hospital {
     public Hospital() {
     }
 
+    public Hospital(String _nome, String _descricao, String _endereco){
+        this.nome = _nome;
+        this.descricao = _descricao;
+        this.endereco = _endereco;
+    }
+
     public String getStorageId() {
         return storageId;
     }
