@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import app.com.bugdroidbuilder.paulo.emergencyhelper.R;
-import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.PermissionHandler;
+import app.com.bugdroidbuilder.paulo.emergencyhelper.service.PermissionHandler;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.model.TelefoneUtil;
 
 public class TelefonesUteisActivity extends AppCompatActivity {
