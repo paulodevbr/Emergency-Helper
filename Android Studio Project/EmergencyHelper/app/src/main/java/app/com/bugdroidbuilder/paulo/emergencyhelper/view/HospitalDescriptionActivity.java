@@ -219,8 +219,10 @@ public class HospitalDescriptionActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // If the user touch in the toolbar arrow, finish this activity and go back to main
-        finish();
+
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+        }
         return super.onOptionsItemSelected(item);
     }
 

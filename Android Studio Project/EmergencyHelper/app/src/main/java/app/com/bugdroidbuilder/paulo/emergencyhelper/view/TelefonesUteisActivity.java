@@ -103,8 +103,9 @@ public class TelefonesUteisActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // If the user click to go back, the app goes to MainActivity
-        finish();
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+        }
         return super.onOptionsItemSelected(item);
     }
 

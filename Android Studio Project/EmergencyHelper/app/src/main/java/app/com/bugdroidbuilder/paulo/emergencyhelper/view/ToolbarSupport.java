@@ -4,6 +4,7 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 
 import app.com.bugdroidbuilder.paulo.emergencyhelper.R;
 
@@ -25,6 +26,12 @@ public class ToolbarSupport {
         toolbar.setTitle(title);
         activity.setSupportActionBar(toolbar);
 
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
 
         //Setup the button to quit this activity
         activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
