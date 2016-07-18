@@ -28,6 +28,7 @@ import java.util.Set;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.R;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.AsyncHospital;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.HospitalController;
+import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.HospitalDAO;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.HospitalMarkerClickListener;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.service.PermissionHandler;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.model.Hospital;

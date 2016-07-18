@@ -1,7 +1,5 @@
 <resources>
-    <string name="google_maps_key_pedro" templateMergeStrategy="preserve" translatable="false">AIzaSyC4j4AAgSF08KNuXbBWSzetqYK5b2_dQF4</string>
+    <string name="google_maps_key_pedro" templateMergeStrategy="preserve" translatable="false">AIzaSyC9iz8j0C643xaiRPIo0TkGBvi_1adq9Zw</string>
     <string name="google_maps_key_paulo_notebook" templateMergeStrategy="preserve" translatable="false">AIzaSyCVsiCxx-yx60Pl9-Ew7HfF3yT10Wb9X9A</string>
-]   <string name="google_maps_key_paulo_desktop" templateMergeStrategy="preserve" translatable="false">AIzaSyC5N1ptJ49A779TIHAo54q2JfgOQmRZ-O8</string>
-
-
+    <string name="google_maps_key_paulo_desktop" templateMergeStrategy="preserve" translatable="false">AIzaSyC5N1ptJ49A779TIHAo54q2JfgOQmRZ-O8</string>
 </resources>

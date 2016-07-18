@@ -5,5 +5,6 @@
     <string name="menu_hospitais">Hospitais</string>
     <string name="menu_telefones">Telefones úteis</string>
     <string name="title_activity_maps1">Map</string>
+    <string name="dataBaseInsertError">Não foi possivel inserir no banco</string>
 
 </resources>
