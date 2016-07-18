@@ -40,7 +40,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/toolbar_height_translucent"
                 android:paddingTop="@dimen/toolbar_padding_translucent"
-                app:layout_collapseMode="pin" />
+                app:layout_collapseMode="pin"
+                android:theme="@style/ToolbarTheme"/>
         </android.support.design.widget.CollapsingToolbarLayout>
 
     </android.support.design.widget.AppBarLayout>
@@ -50,8 +51,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
+        android:src="@drawable/navigate_icon"
         app:elevation="6dp"
         app:fabSize="normal"
+        app:backgroundTint="@color/colorAccent"
         app:layout_anchor="@+id/appBar"
         app:layout_anchorGravity="bottom|right|end" />
 

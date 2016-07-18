@@ -25,6 +25,7 @@ import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.AsyncHospitalInt
 import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.HospitalController;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.HospitalMarkerClickListener;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.PermissionHandler;
+import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.TelefoneHandler;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.model.Hospital;
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -57,7 +58,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 .findFragmentById(R.id.map);
 
         final Toolbar toolbar = (Toolbar) findViewById(R.id.maps_toolbar);
-        ToolbarSupport.startToolbar(this, toolbar, "Emergency Helper");
+        ToolbarSupport.startToolbar(this, toolbar, R.id.maps_toolbar,"Emergency Helper");
 
         fabCall.setOnClickListener(new View.OnClickListener() {
             @Override

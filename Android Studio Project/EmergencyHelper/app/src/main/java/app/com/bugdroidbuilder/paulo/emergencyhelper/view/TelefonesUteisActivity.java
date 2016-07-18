@@ -17,6 +17,7 @@ import java.util.List;
 
 import app.com.bugdroidbuilder.paulo.emergencyhelper.R;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.PermissionHandler;
+import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.TelefoneHandler;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.model.TelefoneUtil;
 
 public class TelefonesUteisActivity extends AppCompatActivity {
@@ -32,8 +33,8 @@ public class TelefonesUteisActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_telefones);
-        final Toolbar toolbar = (Toolbar) findViewById(R.id.telefones_toolbar);
-        ToolbarSupport.startToolbarWithArrow(this, toolbar, "Telefones úteis");
+        Toolbar toolbar = new Toolbar(getApplicationContext());
+        ToolbarSupport.startToolbarWithArrow(this, toolbar, R.id.telefones_toolbar,"Telefones úteis");
 
 
         permissionHandler.requestPermissionCall(activity);

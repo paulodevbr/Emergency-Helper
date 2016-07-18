@@ -95,7 +95,7 @@
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:onClick="cancelarLigacao"
-            android:src="@drawable/ic_call_end_black_24dp"
+            android:src="@drawable/cancel"
             app:backgroundTint="@color/colorPrimaryDark" />
 
     </RelativeLayout>

@@ -52,6 +52,9 @@ public class HospitalMarkerClickListener implements GoogleMap.OnMarkerClickListe
         String endereco = idHospital.getEndereco();
         String telefone = idHospital.getTelefone();
         String tipo = idHospital.getTipo();
+        Double latitude = idHospital.getLatitude();
+        Double longitude = idHospital.getLongitude();
+
 
         Intent intent = new Intent(context, HospitalDescriptionActivity.class);
         intent.putExtra("imagem",linkImagem);
@@ -60,6 +63,8 @@ public class HospitalMarkerClickListener implements GoogleMap.OnMarkerClickListe
         intent.putExtra("endereco",endereco);
         intent.putExtra("telefone",telefone);
         intent.putExtra("tipo",tipo);
+        intent.putExtra("latitude", latitude);
+        intent.putExtra("longitude", longitude);
 
         context.startActivity(intent);
 

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -18,6 +19,7 @@ import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
@@ -33,7 +35,7 @@ import butterknife.ButterKnife;
 
 public class HospitalDescriptionActivity extends AppCompatActivity {
 
-        public static final String EXTRA_DISCO = "disco";
+
 
         @Bind(R.id.fabFavorito)
         FloatingActionButton mFabFavorito;
@@ -73,15 +75,18 @@ public class HospitalDescriptionActivity extends AppCompatActivity {
             ButterKnife.bind(this);
             Intent intent = getIntent();
             Hospital hospital = new Hospital(intent.getStringExtra("nome"),
-                    intent.getStringExtra("descricao"),intent.getStringExtra("endereco"));
+                    intent.getStringExtra("descricao"),
+                    intent.getStringExtra("endereco"),
+                    intent.getDoubleExtra("latitude", 0),
+                    intent.getDoubleExtra("longitude", 0));
 
             preencherCampos(hospital);
 
             configurarBarraDeTitulo(hospital.getNome());
 
             carregarFoto(hospital);
-
-            configurarAnimacaoEntrada();
+//
+//            configurarAnimacaoEntrada();
 
 
             configurarFab(hospital);
@@ -121,7 +126,7 @@ public class HospitalDescriptionActivity extends AppCompatActivity {
         }
 
         private void configurarBarraDeTitulo(String titulo) {
-            setSupportActionBar(mToolbar);
+            ToolbarSupport.startToolbarWithArrow(this, mToolbar, R.id.toolbar, titulo);
             if (mAppBar != null) {
                 if (mAppBar.getLayoutParams() instanceof CoordinatorLayout.LayoutParams ) {
                     CoordinatorLayout.LayoutParams lp = (CoordinatorLayout.LayoutParams) mAppBar.getLayoutParams();
@@ -132,17 +137,19 @@ public class HospitalDescriptionActivity extends AppCompatActivity {
             if (mCollapsingToolbarLayout != null) {
                 getSupportActionBar().setDisplayShowTitleEnabled(true);
                 mCollapsingToolbarLayout.setTitle(titulo);
+                mCollapsingToolbarLayout.setExpandedTitleColor(getResources().getColor(R.color.colorTitleText));
+                mCollapsingToolbarLayout.setCollapsedTitleTextColor(getResources().getColor(R.color.colorTitleText));
             } else {
                 getSupportActionBar().setDisplayShowTitleEnabled(false);
             }
         }
-
-        private void configurarAnimacaoEntrada() {
-            ViewCompat.setTransitionName(mImgCapa, "capa");
-            ViewCompat.setTransitionName(mTxtTitulo, "titulo");
-            ViewCompat.setTransitionName(mTxtAno, "ano");
-            ActivityCompat.postponeEnterTransition(this);
-        }
+//
+//        private void configurarAnimacaoEntrada() {
+//            ViewCompat.setTransitionName(mImgCapa, "capa");
+//            ViewCompat.setTransitionName(mTxtTitulo, "titulo");
+//            ViewCompat.setTransitionName(mTxtAno, "ano");
+//            ActivityCompat.postponeEnterTransition(this);
+//        }
 
         private void iniciarAnimacaoDeEntrada(final View sharedElement) {
             sharedElement.getViewTreeObserver().addOnPreDrawListener(
@@ -161,7 +168,7 @@ public class HospitalDescriptionActivity extends AppCompatActivity {
                 @Override
                 public void onGenerated(Palette palette) {
                     int vibrantColor = palette.getVibrantColor(Color.BLACK);
-                    int darkVibrantColor = palette.getDarkVibrantColor(Color.BLACK);
+                    int darkVibrantColor = palette.getDarkVibrantColor(Color.RED);
                     int darkMutedColor = palette.getDarkMutedColor(Color.BLACK);
                     int lightMutedColor = palette.getLightMutedColor(Color.WHITE);
 
@@ -175,62 +182,48 @@ public class HospitalDescriptionActivity extends AppCompatActivity {
                         getWindow().setNavigationBarColor(darkMutedColor);
                     }
                     if (mCollapsingToolbarLayout != null) {
-                        mCollapsingToolbarLayout.setContentScrimColor(darkVibrantColor);
+                        mCollapsingToolbarLayout.setContentScrimColor(getResources().getColor(R.color.colorPrimary));
                     }
-                    mCoordinator.setBackgroundColor(lightMutedColor);
+                    mCoordinator.setBackgroundColor(getResources().getColor(R.color.colorBackground));
                     iniciarAnimacaoDeEntrada(mCoordinator);
                 }
             });
         }
 
         private void configurarFab(final Hospital hospital) {
-//            boolean favorito = mDiscoDb.favorito(disco);
-//            mFabFavorito.setImageDrawable(getFabIcone(favorito));
-//            mFabFavorito.setBackgroundTintList(getFabBackground(favorito));
+
             mFabFavorito.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    String tagEndereco = getResources().getString(R.string.endereco_maps);
+                    String linkMaps = getResources().getString(R.string.link_maps);
+                    String pacoteMaps = getResources().getString(R.string.pacote_maps);
+                    // Create a Uri from an intent string. Use the result to create an Intent.
+                    StringBuilder endereco = new StringBuilder().append(tagEndereco)
+                            .append(hospital.getLatitude())
+                            .append(",")
+                            .append(hospital.getLongitude());
 
+                    StringBuilder maps = new StringBuilder().append(linkMaps).append(endereco.toString());
+                    Uri gmmIntentUri = Uri.parse(maps.toString());
+
+
+                    Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+
+                    mapIntent.setPackage(pacoteMaps);
+
+                    startActivity(mapIntent);
                 }
             });
         }
 
-//        private Drawable getFabIcone(boolean favorito){
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
-//                return ResourcesCompat.getDrawable(
-//                        getResources(),
-//                        favorito ? R.drawable.ic_cancel_anim : R.drawable.ic_check_anim,
-//                        getTheme());
-//            } else {
-//                return getResources().getDrawable(
-//                        favorito ? R.drawable.ic_cancel : R.drawable.ic_check);
-//            }
-//        }
-//        private ColorStateList getFabBackground(boolean favorito) {
-//            return getResources().getColorStateList(favorito ?
-//                    R.color.bg_fab_cancel : R.color.bg_fab_favorito);
-//        }
-        @Override
-        public void onBackPressed() {
-            mFabFavorito.animate().scaleX(0).scaleY(0).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    super.onAnimationEnd(animation);
-                    HospitalDescriptionActivity.super.onBackPressed();
-                }
-            }).start();
-        }
-//
-//        private void animar(boolean favorito){
-//            mFabFavorito.setBackgroundTintList(getFabBackground(favorito));
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
-//                AnimatedVectorDrawable avd = (AnimatedVectorDrawable) getFabIcone(!favorito);
-//                mFabFavorito.setImageDrawable(avd);
-//                avd.start();
-//            } else {
-//                mFabFavorito.setImageDrawable(getFabIcone(favorito));
-//            }
-//        }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // If the user touch in the toolbar arrow, finish this activity and go back to main
+        finish();
+        return super.onOptionsItemSelected(item);
+    }
+
 
 
 

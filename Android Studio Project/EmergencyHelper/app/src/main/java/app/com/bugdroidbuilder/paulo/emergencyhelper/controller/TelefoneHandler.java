@@ -1,4 +1,4 @@
-package app.com.bugdroidbuilder.paulo.emergencyhelper.view;
+package app.com.bugdroidbuilder.paulo.emergencyhelper.controller;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -14,12 +14,12 @@ import android.widget.TextView;
 public class TelefoneHandler {
     private static int TEMPO_CONTAGEM = 5000;
     private static boolean cancelaLigacao = false;
-    private static boolean efetuarLigacao = false;
+
 
 
     public static void ligarEmergencia(final Activity activity, final Intent intent, int popupId,
                                        int fabId, int msgId) {
-        efetuarLigacao = false;
+
         if (intent.getAction().equals(Intent.ACTION_CALL)) {
             final RelativeLayout popup = (RelativeLayout) activity.findViewById(popupId);
             popup.setVisibility(View.VISIBLE);
@@ -41,7 +41,6 @@ public class TelefoneHandler {
                         text.setVisibility(View.GONE);
                         popup.setVisibility(View.GONE);
                         cancelaLigacao = false;
-                        efetuarLigacao = false;
                         cancel();
                     }
                 }
