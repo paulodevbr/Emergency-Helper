@@ -128,7 +128,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(mylatlng, zoomInicial), 1500, null);
 
-        HospitalMarkerClickListener hospitalMarkerClickListener = new HospitalMarkerClickListener(setHospital, getApplicationContext());
+        HospitalMarkerClickListener hospitalMarkerClickListener = new HospitalMarkerClickListener(setHospital, this);
         mMap.setOnMarkerClickListener(hospitalMarkerClickListener);
 
         UiSettings uiSettings = mMap.getUiSettings();
