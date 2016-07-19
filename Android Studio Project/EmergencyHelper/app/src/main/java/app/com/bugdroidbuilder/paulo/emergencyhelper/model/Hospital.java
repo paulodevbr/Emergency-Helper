@@ -24,8 +24,9 @@ public class Hospital {
     public Hospital() {
     }
 
-    public Hospital(String _nome, String _descricao, String _endereco, Double _latitude, Double _longitude){
+    public Hospital(String _nome, String _telefone, String _descricao, String _endereco, Double _latitude, Double _longitude){
         this.nome = _nome;
+        this.telefone = _telefone;
         this.descricao = _descricao;
         this.endereco = _endereco;
         this.latitude = _latitude;

@@ -21,12 +21,17 @@
 
 
     <style name="Titulo">
-        <item name="android:textSize">16sp</item>
+        <item name="android:textSize">20sp</item>
         <item name="android:textColor">@color/colorPrimaryDark</item>
     </style>
     <style name="TextoComum">
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">@android:color/darker_gray</item>
+    </style>
+
+    <style name="Telefone">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@android:color/holo_blue_dark</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />

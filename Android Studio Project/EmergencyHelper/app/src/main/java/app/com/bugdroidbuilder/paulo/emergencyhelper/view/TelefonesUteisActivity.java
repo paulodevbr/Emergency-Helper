@@ -1,15 +1,12 @@
 package app.com.bugdroidbuilder.paulo.emergencyhelper.view;
 
 import android.app.Activity;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.MenuItem;
 import android.view.View;
 
 import java.util.ArrayList;
@@ -87,23 +84,13 @@ public class TelefonesUteisActivity extends AppCompatActivity {
             @Override
             public void onClick(View view, int position) {
 
-
                 TelefoneUtil telefoneUtil = listaTelefones.get(position);
-                String uri = "tel:" + telefoneUtil.getNumero().trim();
-                final Intent intent;
 
-                if (PermissionHandler.permissionCall) {
-                    intent = new Intent(Intent.ACTION_CALL);
-
-                } else {
-                    intent = new Intent(Intent.ACTION_DIAL);
-                }
-
-                intent.setData(Uri.parse(uri));
-
-                TelefoneHandler.ligarEmergencia(activity, intent, R.id.popup_telefones, R.id.fab_cancel_telefones, R.id.text_count_down_telefones);
-
-
+                TelefoneHandler.ligarEmergencia(activity,
+                        telefoneUtil.getNumero(),
+                        R.id.popup_telefones,
+                        R.id.fab_cancel_telefones,
+                        R.id.text_count_down_telefones);
             }
 
             @Override

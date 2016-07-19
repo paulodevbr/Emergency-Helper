@@ -2,6 +2,7 @@ package app.com.bugdroidbuilder.paulo.emergencyhelper.controller;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.CountDownTimer;
 import android.support.design.widget.FloatingActionButton;
 import android.view.View;
@@ -17,8 +18,21 @@ public class TelefoneHandler {
 
 
 
-    public static void ligarEmergencia(final Activity activity, final Intent intent, int popupId,
+
+    public static void ligarEmergencia(final Activity activity, String numeroEmergencia, int popupId,
                                        int fabId, int msgId) {
+
+        String uri = "tel:" + numeroEmergencia.trim();
+        final Intent intent;
+
+        if (PermissionHandler.permissionCall) {
+            intent = new Intent(Intent.ACTION_CALL);
+
+        } else {
+            intent = new Intent(Intent.ACTION_DIAL);
+        }
+
+        intent.setData(Uri.parse(uri));
 
         if (intent.getAction().equals(Intent.ACTION_CALL)) {
             final RelativeLayout popup = (RelativeLayout) activity.findViewById(popupId);
@@ -58,7 +72,14 @@ public class TelefoneHandler {
             activity.startActivity(intent);
         }
 
+    }
 
+    public static void discar(Activity activity, String numero){
+
+        String uri = "tel:" + numero.trim();
+        final Intent intent = new Intent(Intent.ACTION_DIAL);
+        intent.setData(Uri.parse(uri));
+        activity.startActivity(intent);
     }
 
 

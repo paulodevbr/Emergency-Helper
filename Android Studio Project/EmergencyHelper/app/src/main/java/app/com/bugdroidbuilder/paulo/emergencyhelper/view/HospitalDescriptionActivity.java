@@ -3,6 +3,7 @@ package app.com.bugdroidbuilder.paulo.emergencyhelper.view;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
@@ -16,7 +17,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
@@ -26,6 +26,7 @@ import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
 import app.com.bugdroidbuilder.paulo.emergencyhelper.R;
+import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.TelefoneHandler;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.model.Hospital;
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -39,10 +40,10 @@ public class HospitalDescriptionActivity extends AppCompatActivity {
     ImageView mImgCapa;
     @Bind(R.id.txt_nome_hospital)
     TextView txtNomeHospital;
-    @Bind(R.id.txt_endereco_hospital)
-    TextView txtEnderecoHospital;
-    @Bind(R.id.txtGravadora)
-    TextView mTxtGravadora;
+    @Bind(R.id.txt_telefone_hospital)
+    TextView txtTelefoneHospital;
+    @Bind(R.id.txt_especialidade)
+    TextView txtEspecialidade;
     @Bind(R.id.txt_descricao)
     TextView txtDescricaoHospital;
     @Bind(R.id.txtMusicas)
@@ -61,6 +62,7 @@ public class HospitalDescriptionActivity extends AppCompatActivity {
     Toolbar mToolbar;
 
     Target mPicassoTarget;
+    Hospital hospital;
 
 
     @Override
@@ -70,7 +72,8 @@ public class HospitalDescriptionActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
         Intent intent = getIntent();
-        Hospital hospital = new Hospital(intent.getStringExtra("nome"),
+        hospital = new Hospital(intent.getStringExtra("nome"),
+                intent.getStringExtra("telefone"),
                 intent.getStringExtra("descricao"),
                 intent.getStringExtra("endereco"),
                 intent.getDoubleExtra("latitude", 0),
@@ -116,9 +119,13 @@ public class HospitalDescriptionActivity extends AppCompatActivity {
     private void preencherCampos(Hospital hospital) {
         txtNomeHospital.setText(hospital.getNome());
 
-        txtEnderecoHospital.setText(String.valueOf(hospital.getEndereco()));
+        txtTelefoneHospital.setText(hospital.getTelefone());
+        txtTelefoneHospital.setPaintFlags(txtTelefoneHospital.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
-        mTxtGravadora.setText(hospital.getEndereco());
+        txtTelefoneHospital.setText(String.valueOf(hospital.getTelefone()));
+
+
+        txtEspecialidade.setText(hospital.getEndereco());
 
     }
 
@@ -206,6 +213,11 @@ public class HospitalDescriptionActivity extends AppCompatActivity {
                 startActivity(mapIntent);
             }
         });
+    }
+
+    public void ligarHospital(View view){
+
+        TelefoneHandler.discar(this, this.hospital.getTelefone());
     }
 
 }

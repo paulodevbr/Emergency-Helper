@@ -2,7 +2,6 @@ package app.com.bugdroidbuilder.paulo.emergencyhelper.view;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -17,6 +16,7 @@ import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.gson.Gson;
 
 import java.util.Set;
 
@@ -75,6 +75,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         });
 
+//        fabNavigate.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                navegar();
+//            }
+//        });
 
 
         AsyncHospitalCollection asyncHospitalCollection = new AsyncHospitalCollection(this);
@@ -108,16 +114,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         showButtons();
     }
 
-
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
     @Override
     public void onMapReady(GoogleMap googleMap) {
         permissionHandler.requestPermissionLocation(this);
@@ -132,14 +128,22 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(mylatlng, zoomInicial), 1500, null);
 
-        HospitalMarkerClickListener hospitalMarkerClickListener = new HospitalMarkerClickListener(setHospital, this);
+        HospitalMarkerClickListener hospitalMarkerClickListener = new HospitalMarkerClickListener(setHospital, getApplicationContext());
         mMap.setOnMarkerClickListener(hospitalMarkerClickListener);
 
         UiSettings uiSettings = mMap.getUiSettings();
         uiSettings.setMapToolbarEnabled(false);
     }
 
+    public void navegar(){
+        hideButtons();
+        Intent intent = new Intent(this, NavigateActivity.class);
+        Gson gson = new Gson();
+        String json = gson.toJson(setHospital);
 
+        intent.putExtra("hospitais",json);
+        startActivity(intent);
+    }
 
     public void chamarAjuda() {
 
@@ -148,18 +152,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         permissionHandler.requestPermissionCall(this);
 
         String numeroEmergencia = "192";
-        String uri = "tel:" + numeroEmergencia.trim();
-        final Intent intent;
 
-        if (PermissionHandler.permissionCall) {
-            intent = new Intent(Intent.ACTION_CALL);
-
-        } else {
-            intent = new Intent(Intent.ACTION_DIAL);
-        }
-        intent.setData(Uri.parse(uri));
-
-        TelefoneHandler.ligarEmergencia(activity, intent, R.id.popup_ligacao, R.id.fab_cancel_maps, R.id.text_count_down_maps);
+        TelefoneHandler.ligarEmergencia(activity,
+                numeroEmergencia,
+                R.id.popup_ligacao,
+                R.id.fab_cancel_maps,
+                R.id.text_count_down_maps);
 
 
     }
