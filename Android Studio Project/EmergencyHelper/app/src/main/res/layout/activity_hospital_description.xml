@@ -38,9 +38,10 @@
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/toolbar_height_translucent"
+                android:layout_height="42dp"
                 android:paddingTop="@dimen/toolbar_padding_translucent"
                 app:layout_collapseMode="pin"
+                app:navigationIcon="@drawable/ic_arrow_back"
                 android:theme="@style/ToolbarTheme"/>
         </android.support.design.widget.CollapsingToolbarLayout>
 

@@ -52,12 +52,15 @@ public class HospitalController {
         }
 
 
-        Drawable circle = activity.getResources().getDrawable(R.drawable.place_hospital);
+        Drawable marker = activity.getResources().getDrawable(R.drawable.place_hospital);
         Canvas canvas = new Canvas();
-        Bitmap bitmap = Bitmap.createBitmap(circle.getIntrinsicWidth(), circle.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        Bitmap bitmap = Bitmap.createBitmap(marker.getIntrinsicWidth(),
+                marker.getIntrinsicHeight(),
+                Bitmap.Config.ARGB_8888);
+
         canvas.setBitmap(bitmap);
-        circle.setBounds(0, 0, circle.getIntrinsicWidth(), circle.getIntrinsicHeight());
-        circle.draw(canvas);
+        marker.setBounds(0, 0, marker.getIntrinsicWidth(), marker.getIntrinsicHeight());
+        marker.draw(canvas);
 
 
         LatLng position = new LatLng(hospital.getLatitude(), hospital.getLongitude());

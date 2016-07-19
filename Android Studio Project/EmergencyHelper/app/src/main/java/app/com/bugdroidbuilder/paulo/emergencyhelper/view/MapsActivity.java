@@ -15,6 +15,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.Set;
@@ -58,12 +59,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 .findFragmentById(R.id.map);
 
         final Toolbar toolbar = (Toolbar) findViewById(R.id.maps_toolbar);
-        ToolbarSupport.startToolbar(this, toolbar, R.id.maps_toolbar,"Emergency Helper");
+        ToolbarSupport.startToolbar(this, toolbar,"Emergency Helper");
 
         fabCall.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                emergencia();
+                chamarAjuda();
             }
         });
 
@@ -133,11 +134,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         HospitalMarkerClickListener hospitalMarkerClickListener = new HospitalMarkerClickListener(setHospital, this);
         mMap.setOnMarkerClickListener(hospitalMarkerClickListener);
+
+        UiSettings uiSettings = mMap.getUiSettings();
+        uiSettings.setMapToolbarEnabled(false);
     }
 
 
 
-    public void emergencia() {
+    public void chamarAjuda() {
 
         hideButtons();
 

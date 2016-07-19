@@ -20,25 +20,18 @@ public class ToolbarSupport {
      * @param toolbar toolbar object
      * @param title title on the toolbar
      */
-    public static void startToolbarWithArrow(AppCompatActivity activity, Toolbar toolbar, int id, String title){
+    public static void startToolbarWithArrow(final AppCompatActivity activity, final Toolbar toolbar, String title){
 
-        toolbar = (Toolbar) activity.findViewById(id);
         toolbar.setTitle(title);
         activity.setSupportActionBar(toolbar);
 
+        //Setup the button to quit this activity
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                activity.finish();
             }
         });
-
-        //Setup the button to quit this activity
-        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        //Set the color of the arrow
-        final Drawable upArrow = activity.getResources().getDrawable(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
-        upArrow.setColorFilter(activity.getResources().getColor(R.color.colorTitleText), PorterDuff.Mode.SRC_ATOP);
-        activity.getSupportActionBar().setHomeAsUpIndicator(upArrow);
     }
 
     /**
@@ -46,9 +39,8 @@ public class ToolbarSupport {
      * @param activity activity opening the toolbar
      * @param toolbar toolbar object
      */
-    public static void startToolbar(AppCompatActivity activity, Toolbar toolbar, int id, String title){
+    public static void startToolbar(AppCompatActivity activity, final Toolbar toolbar, String title){
 
-        toolbar = (Toolbar) activity.findViewById(id);
         toolbar.setTitle(title);
         activity.setSupportActionBar(toolbar);
 

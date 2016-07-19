@@ -17,23 +17,23 @@
             android:orientation="vertical"
             android:padding="16dp">
             <TextView
-                android:id="@+id/txtTitulo"
+                android:id="@+id/txt_nome_hospital"
                 style="@style/Titulo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
             <TextView
-                android:id="@+id/txtAno"
+                android:id="@+id/txt_telefone_hospital"
                 style="@style/TextoComum"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
             <TextView
-                android:id="@+id/txtGravadora"
+                android:id="@+id/txt_especialidade"
                 style="@style/TextoComum"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
             <TextView
-                android:id="@+id/txtFormacao"
+                android:id="@+id/txt_descricao"
                 style="@style/TextoComum"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />

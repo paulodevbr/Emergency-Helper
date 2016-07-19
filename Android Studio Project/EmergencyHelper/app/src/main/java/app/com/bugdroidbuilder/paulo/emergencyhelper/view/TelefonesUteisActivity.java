@@ -19,65 +19,36 @@ import app.com.bugdroidbuilder.paulo.emergencyhelper.R;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.PermissionHandler;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.TelefoneHandler;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.model.TelefoneUtil;
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
 public class TelefonesUteisActivity extends AppCompatActivity {
+    @Bind(R.id.telefones_toolbar)
+    Toolbar toolbar;
+    @Bind(R.id.list_telefones)
+    RecyclerView recyclerView;
+
+    private final PermissionHandler permissionHandler = new PermissionHandler();
     private boolean cancelaLigacao = false;
     private List<TelefoneUtil> listaTelefones = new ArrayList<>();
-    private RecyclerView recyclerView;
-    private final PermissionHandler permissionHandler = new PermissionHandler();
     private TelefonesAdapter mAdapter;
     private Activity activity = this;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_telefones);
-        Toolbar toolbar = new Toolbar(getApplicationContext());
-        ToolbarSupport.startToolbarWithArrow(this, toolbar, R.id.telefones_toolbar,"Telefones úteis");
 
+        ButterKnife.bind(this);
+
+        ToolbarSupport.startToolbarWithArrow(this, toolbar, "Telefones úteis");
 
         permissionHandler.requestPermissionCall(activity);
 
-        recyclerView = (RecyclerView) findViewById(R.id.list_telefones);
-
-        mAdapter = new TelefonesAdapter(listaTelefones);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
-        recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(mAdapter);
+        iniciaRecyclerView();
 
         prepareTelefoneData();
 
-
-        recyclerView.addOnItemTouchListener(new RecyclerViewListener.RecyclerTouchListener(getApplicationContext(), recyclerView, new RecyclerViewListener.ClickListener() {
-            @Override
-            public void onClick(View view, int position) {
-
-
-                TelefoneUtil telefoneUtil = listaTelefones.get(position);
-                String uri = "tel:" + telefoneUtil.getNumero().trim();
-                final Intent intent;
-
-                if (PermissionHandler.permissionCall) {
-                    intent = new Intent(Intent.ACTION_CALL);
-
-                } else {
-                    intent = new Intent(Intent.ACTION_DIAL);
-                }
-
-                intent.setData(Uri.parse(uri));
-
-                TelefoneHandler.ligarEmergencia(activity,intent,R.id.popup_telefones, R.id.fab_cancel_telefones, R.id.text_count_down_telefones);
-
-
-            }
-
-            @Override
-            public void onLongClick(View view, int position) {
-
-            }
-        }));
 
     }
 
@@ -96,17 +67,50 @@ public class TelefonesUteisActivity extends AppCompatActivity {
 
     }
 
-    public void cancelarLigacao(View view){
+    public void cancelarLigacao(View view) {
 
         TelefoneHandler.cancelarLigacao();
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            finish();
-        }
-        return super.onOptionsItemSelected(item);
+
+    public void iniciaRecyclerView() {
+
+
+        mAdapter = new TelefonesAdapter(listaTelefones);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(mAdapter);
+
+        recyclerView.addOnItemTouchListener(new RecyclerViewListener.RecyclerTouchListener(getApplicationContext(), recyclerView, new RecyclerViewListener.ClickListener() {
+
+            @Override
+            public void onClick(View view, int position) {
+
+
+                TelefoneUtil telefoneUtil = listaTelefones.get(position);
+                String uri = "tel:" + telefoneUtil.getNumero().trim();
+                final Intent intent;
+
+                if (PermissionHandler.permissionCall) {
+                    intent = new Intent(Intent.ACTION_CALL);
+
+                } else {
+                    intent = new Intent(Intent.ACTION_DIAL);
+                }
+
+                intent.setData(Uri.parse(uri));
+
+                TelefoneHandler.ligarEmergencia(activity, intent, R.id.popup_telefones, R.id.fab_cancel_telefones, R.id.text_count_down_telefones);
+
+
+            }
+
+            @Override
+            public void onLongClick(View view, int position) {
+
+            }
+        }));
     }
 
 }
