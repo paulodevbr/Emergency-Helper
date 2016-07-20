@@ -7,4 +7,8 @@
     <string name="title_activity_maps1">Map</string>
     <string name="dataBaseInsertError">Não foi possivel inserir no banco</string>
 
+    <string name="count_down_call">
+        Chamando ajuda em \n
+    </string>
+
 </resources>

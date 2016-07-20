@@ -1,81 +1,55 @@
 package app.com.bugdroidbuilder.paulo.emergencyhelper.view;
 
 import android.app.Activity;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.MenuItem;
 import android.view.View;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import app.com.bugdroidbuilder.paulo.emergencyhelper.R;
+<<<<<<< HEAD
 import app.com.bugdroidbuilder.paulo.emergencyhelper.service.PermissionHandler;
+=======
+import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.PermissionHandler;
+import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.TelefoneHandler;
+>>>>>>> master
 import app.com.bugdroidbuilder.paulo.emergencyhelper.model.TelefoneUtil;
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
 public class TelefonesUteisActivity extends AppCompatActivity {
+    @Bind(R.id.telefones_toolbar)
+    Toolbar toolbar;
+    @Bind(R.id.list_telefones)
+    RecyclerView recyclerView;
+
+    private final PermissionHandler permissionHandler = new PermissionHandler();
     private boolean cancelaLigacao = false;
     private List<TelefoneUtil> listaTelefones = new ArrayList<>();
-    private RecyclerView recyclerView;
     private TelefonesAdapter mAdapter;
     private Activity activity = this;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_telefones);
-        final Toolbar toolbar = (Toolbar) findViewById(R.id.telefones_toolbar);
+
+        ButterKnife.bind(this);
+
         ToolbarSupport.startToolbarWithArrow(this, toolbar, "Telefones úteis");
 
-        PermissionHandler permissionHandler = new PermissionHandler();
         permissionHandler.requestPermissionCall(activity);
 
-        recyclerView = (RecyclerView) findViewById(R.id.list_telefones);
-
-        mAdapter = new TelefonesAdapter(listaTelefones);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
-        recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(mAdapter);
+        iniciaRecyclerView();
 
         prepareTelefoneData();
 
-
-        recyclerView.addOnItemTouchListener(new RecyclerViewListener.RecyclerTouchListener(getApplicationContext(), recyclerView, new RecyclerViewListener.ClickListener() {
-            @Override
-            public void onClick(View view, int position) {
-
-
-                TelefoneUtil telefoneUtil = listaTelefones.get(position);
-                String uri = "tel:" + telefoneUtil.getNumero().trim();
-                final Intent intent;
-
-                if (PermissionHandler.permissionCall) {
-                    intent = new Intent(Intent.ACTION_CALL);
-
-                } else {
-                    intent = new Intent(Intent.ACTION_DIAL);
-                }
-
-                intent.setData(Uri.parse(uri));
-
-                TelefoneHandler.ligarEmergencia(activity,intent, R.id.fab_cancel_telefones, R.id.text_count_down_telefones);
-
-
-            }
-
-            @Override
-            public void onLongClick(View view, int position) {
-
-            }
-        }));
 
     }
 
@@ -94,16 +68,40 @@ public class TelefonesUteisActivity extends AppCompatActivity {
 
     }
 
-    public void cancelarLigacao(View view){
+    public void cancelarLigacao(View view) {
 
         TelefoneHandler.cancelarLigacao();
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // If the user click to go back, the app goes to MainActivity
-        finish();
-        return super.onOptionsItemSelected(item);
+
+    public void iniciaRecyclerView() {
+
+
+        mAdapter = new TelefonesAdapter(listaTelefones);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(mAdapter);
+
+        recyclerView.addOnItemTouchListener(new RecyclerViewListener.RecyclerTouchListener(getApplicationContext(), recyclerView, new RecyclerViewListener.ClickListener() {
+
+            @Override
+            public void onClick(View view, int position) {
+
+                TelefoneUtil telefoneUtil = listaTelefones.get(position);
+
+                TelefoneHandler.ligarEmergencia(activity,
+                        telefoneUtil.getNumero(),
+                        R.id.popup_telefones,
+                        R.id.fab_cancel_telefones,
+                        R.id.text_count_down_telefones);
+            }
+
+            @Override
+            public void onLongClick(View view, int position) {
+
+            }
+        }));
     }
 
 }

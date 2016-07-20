@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
     tools:context="app.com.bugdroidbuilder.paulo.emergencyhelper.view.TelefonesUteisActivity">
 
     <android.support.design.widget.AppBarLayout
@@ -15,42 +14,70 @@
             android:id="@+id/telefones_toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
+            app:navigationIcon="@drawable/ic_arrow_back"
             android:background="?attr/colorPrimary"
             app:popupTheme="@style/AppTheme.PopupOverlay" />
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/recycler_view_telefones" />
-
     <RelativeLayout
-        android:id="@+id/count_down_ligacao"
+
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-
+        android:layout_marginTop="?actionBarSize"
         android:animateLayoutChanges="true">
 
-        <android.support.v7.widget.AppCompatTextView
-            android:id="@+id/text_count_down_telefones"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/fab_cancel_telefones"
-            android:layout_centerHorizontal="true"
-            android:textColor="@color/colorPrimary"
-            android:visibility="gone"
-            android:textSize="30sp" />
+        <include layout="@layout/recycler_view_telefones" />
 
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab_cancel_telefones"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginBottom="16dp"
-            android:layout_marginRight="16dp"
-            android:visibility="gone"
-            android:src ="@drawable/cancel_icon"
-            android:onClick="cancelarLigacao"/>
+        <RelativeLayout
+            android:id="@+id/popup_telefones"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="32dp"
+            android:layout_marginRight="32dp"
+            android:background="@color/colorTitleText"
+            android:elevation="10dp"
+            android:paddingBottom="16dp"
+            android:paddingTop="16dp"
+            android:visibility="gone">
+
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/chamando_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:background="@color/colorTitleText"
+                android:text="@string/count_down_call"
+                android:textColor="@color/colorPrimary"
+                android:textSize="24sp" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/text_count_down_telefones"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/fab_cancel_telefones"
+                android:layout_centerHorizontal="true"
+                android:background="@color/colorTitleText"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="50sp" />
+
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fab_cancel_telefones"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:onClick="cancelarLigacao"
+                android:src="@drawable/cancel"
+                app:backgroundTint="@color/colorPrimaryDark" />
+
+        </RelativeLayout>
 
     </RelativeLayout>
+
 
 </android.support.design.widget.CoordinatorLayout>

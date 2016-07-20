@@ -1,10 +1,12 @@
-package app.com.bugdroidbuilder.paulo.emergencyhelper.view;
+package app.com.bugdroidbuilder.paulo.emergencyhelper.controller;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.CountDownTimer;
 import android.support.design.widget.FloatingActionButton;
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 /**
@@ -13,15 +15,30 @@ import android.widget.TextView;
 public class TelefoneHandler {
     private static int TEMPO_CONTAGEM = 5000;
     private static boolean cancelaLigacao = false;
-    private static boolean efetuarLigacao = false;
 
 
-    public static void ligarEmergencia(final Activity activity, final Intent intent, int fabId, int msgId) {
-        efetuarLigacao = false;
+
+
+    public static void ligarEmergencia(final Activity activity, String numeroEmergencia, int popupId,
+                                       int fabId, int msgId) {
+
+        String uri = "tel:" + numeroEmergencia.trim();
+        final Intent intent;
+
+        if (PermissionHandler.permissionCall) {
+            intent = new Intent(Intent.ACTION_CALL);
+
+        } else {
+            intent = new Intent(Intent.ACTION_DIAL);
+        }
+
+        intent.setData(Uri.parse(uri));
+
         if (intent.getAction().equals(Intent.ACTION_CALL)) {
+            final RelativeLayout popup = (RelativeLayout) activity.findViewById(popupId);
+            popup.setVisibility(View.VISIBLE);
+
             final FloatingActionButton fab = (FloatingActionButton) activity.findViewById(fabId);
-
-
             fab.show();
 
             final TextView text = (TextView) activity.findViewById(msgId);
@@ -36,16 +53,16 @@ public class TelefoneHandler {
                     if (cancelaLigacao) {
                         fab.hide();
                         text.setVisibility(View.GONE);
+                        popup.setVisibility(View.GONE);
                         cancelaLigacao = false;
-                        efetuarLigacao = false;
                         cancel();
                     }
                 }
 
                 public void onFinish() {
                     fab.hide();
-
                     text.setVisibility(View.GONE);
+                    popup.setVisibility(View.GONE);
                     activity.startActivity(intent);
                 }
 
@@ -55,7 +72,14 @@ public class TelefoneHandler {
             activity.startActivity(intent);
         }
 
+    }
 
+    public static void discar(Activity activity, String numero){
+
+        String uri = "tel:" + numero.trim();
+        final Intent intent = new Intent(Intent.ACTION_DIAL);
+        intent.setData(Uri.parse(uri));
+        activity.startActivity(intent);
     }
 
 

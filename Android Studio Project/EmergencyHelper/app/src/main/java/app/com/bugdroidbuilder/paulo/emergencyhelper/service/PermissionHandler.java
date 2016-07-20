@@ -14,17 +14,18 @@ public class PermissionHandler implements ActivityCompat.OnRequestPermissionsRes
 
     public static boolean permissionCall = false;
     public static boolean permissionLocal = false;
+    public static boolean permissionNetworkState = false;
 
 
 
     private final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 0;
     private final int MY_PERMISSIONS_REQUEST_LOCATION_FINE = 1;
+    private final int MY_PERMISSIONS_REQUEST_NETWORK_STATE = 2;
 
     public void requestPermissionCall(Activity activity){
         if (ContextCompat.checkSelfPermission(activity,
                 Manifest.permission.CALL_PHONE)
                 != PackageManager.PERMISSION_GRANTED) {
-
             // Should we show an explanation?
             if (ActivityCompat.shouldShowRequestPermissionRationale(activity,
                     Manifest.permission.CALL_PHONE)) {
@@ -84,6 +85,38 @@ public class PermissionHandler implements ActivityCompat.OnRequestPermissionsRes
         }
     }
 
+    public void requestPermissionNetworkState(Activity activity){
+        if (ContextCompat.checkSelfPermission(activity,
+                Manifest.permission.ACCESS_NETWORK_STATE)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(activity,
+                    Manifest.permission.ACCESS_NETWORK_STATE)) {
+
+                // Show an expanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+
+            } else {
+
+                // No explanation needed, we can request the permission.
+
+                ActivityCompat.requestPermissions(activity,
+                        new String[]{Manifest.permission.ACCESS_NETWORK_STATE},
+                        MY_PERMISSIONS_REQUEST_NETWORK_STATE);
+
+                // MY_PERMISSIONS_REQUEST_CALL_PHONE is an
+                // app-defined int constant. The callback method gets the
+                // result of the request.
+            }
+        } else{
+
+            PermissionHandler.permissionNetworkState = true;
+
+        }
+    }
+
 
 
     @Override
@@ -113,6 +146,19 @@ public class PermissionHandler implements ActivityCompat.OnRequestPermissionsRes
                 } else {
 
                     PermissionHandler.permissionLocal = false;
+                }
+                return;
+            }
+            case MY_PERMISSIONS_REQUEST_NETWORK_STATE: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    PermissionHandler.permissionNetworkState = true;
+
+                } else {
+
+                    PermissionHandler.permissionNetworkState = false;
                 }
                 return;
             }

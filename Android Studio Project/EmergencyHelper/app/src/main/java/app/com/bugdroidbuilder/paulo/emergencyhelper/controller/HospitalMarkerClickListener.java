@@ -48,8 +48,30 @@ public class HospitalMarkerClickListener implements GoogleMap.OnMarkerClickListe
 
     private void viewInformation(Hospital idHospital){
 
+<<<<<<< HEAD
         Intent intent = new Intent(context, HospitalDescriptionActivity.class);
         EventBus.getDefault().postSticky(idHospital);
+=======
+        String linkImagem = idHospital.getFotos().get("imagem1");
+        String descricao = idHospital.getDescricao();
+        String nome = idHospital.getNome();
+        String endereco = idHospital.getEndereco();
+        String telefone = idHospital.getTelefone();
+        String tipo = idHospital.getTipo();
+        Double latitude = idHospital.getLatitude();
+        Double longitude = idHospital.getLongitude();
+
+
+        Intent intent = new Intent(context, HospitalDescriptionActivity.class);
+        intent.putExtra("imagem",linkImagem);
+        intent.putExtra("descricao",descricao);
+        intent.putExtra("nome",nome);
+        intent.putExtra("endereco",endereco);
+        intent.putExtra("telefone",telefone);
+        intent.putExtra("tipo",tipo);
+        intent.putExtra("latitude", latitude);
+        intent.putExtra("longitude", longitude);
+>>>>>>> master
 
         context.startActivity(intent);
 
