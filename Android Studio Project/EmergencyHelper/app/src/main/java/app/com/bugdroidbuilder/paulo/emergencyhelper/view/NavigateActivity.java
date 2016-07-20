@@ -1,5 +1,6 @@
 package app.com.bugdroidbuilder.paulo.emergencyhelper.view;
 
+import android.location.Location;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -11,6 +12,8 @@ import android.view.View;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Set;
 
 import app.com.bugdroidbuilder.paulo.emergencyhelper.R;
@@ -26,8 +29,6 @@ public class NavigateActivity extends AppCompatActivity {
     @Bind(R.id.list_hospitais)
     RecyclerView recyclerView;
 
-
-    private Set<Hospital> setHospitais;
     private ArrayList<Hospital> listaHospitais = new ArrayList<>();
 
     private HospitaisAdapter mAdapter;
@@ -39,14 +40,15 @@ public class NavigateActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
         Gson gson = new Gson();
-        String json = getIntent().getStringExtra("hospitais");
-        setHospitais = gson.fromJson(json, Set.class);
-        for(Hospital hospital: setHospitais){
-            listaHospitais.add(hospital);
-        }
+
+
+        //Location location = new Location();
+        //Collections.sort();
+        //Comparator<> comparator = new Comparator()
+        //svg jpg
+        //swipe view
 
         ToolbarSupport.startToolbarWithArrow(this, toolbar, "Navegar para");
-
 
         iniciaRecyclerView();
     }
