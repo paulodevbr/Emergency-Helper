@@ -13,8 +13,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import app.com.bugdroidbuilder.paulo.emergencyhelper.R;
+<<<<<<< HEAD
+import app.com.bugdroidbuilder.paulo.emergencyhelper.service.PermissionHandler;
+=======
 import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.PermissionHandler;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.TelefoneHandler;
+>>>>>>> master
 import app.com.bugdroidbuilder.paulo.emergencyhelper.model.TelefoneUtil;
 import butterknife.Bind;
 import butterknife.ButterKnife;

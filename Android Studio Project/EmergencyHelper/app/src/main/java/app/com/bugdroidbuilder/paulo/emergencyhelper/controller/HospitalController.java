@@ -18,7 +18,13 @@ import app.com.bugdroidbuilder.paulo.emergencyhelper.model.Hospital;
  */
 public class HospitalController {
 
+    private Bitmap bitmap;
 
+<<<<<<< HEAD
+    public HospitalController(Bitmap bitmap){
+        this.bitmap = bitmap;
+    }
+=======
     public static MarkerOptions getHospitalMark(Activity activity, Hospital hospital){
 
         float iconTone;
@@ -61,10 +67,12 @@ public class HospitalController {
         canvas.setBitmap(bitmap);
         marker.setBounds(0, 0, marker.getIntrinsicWidth(), marker.getIntrinsicHeight());
         marker.draw(canvas);
+>>>>>>> master
 
+    public MarkerOptions getHospitalMark(Hospital hospital){
 
         LatLng position = new LatLng(hospital.getLatitude(), hospital.getLongitude());
-        BitmapDescriptor icon = BitmapDescriptorFactory.fromBitmap(bitmap);
+        BitmapDescriptor icon = BitmapDescriptorFactory.fromBitmap(this.bitmap);
         MarkerOptions mark = new MarkerOptions()
                 .position(position)
                 .title(hospital.getNome())

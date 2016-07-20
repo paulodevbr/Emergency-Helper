@@ -6,6 +6,8 @@ import android.content.Intent;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.Marker;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.Set;
 
 import app.com.bugdroidbuilder.paulo.emergencyhelper.model.Hospital;
@@ -46,6 +48,10 @@ public class HospitalMarkerClickListener implements GoogleMap.OnMarkerClickListe
 
     private void viewInformation(Hospital idHospital){
 
+<<<<<<< HEAD
+        Intent intent = new Intent(context, HospitalDescriptionActivity.class);
+        EventBus.getDefault().postSticky(idHospital);
+=======
         String linkImagem = idHospital.getFotos().get("imagem1");
         String descricao = idHospital.getDescricao();
         String nome = idHospital.getNome();
@@ -65,6 +71,7 @@ public class HospitalMarkerClickListener implements GoogleMap.OnMarkerClickListe
         intent.putExtra("tipo",tipo);
         intent.putExtra("latitude", latitude);
         intent.putExtra("longitude", longitude);
+>>>>>>> master
 
         context.startActivity(intent);
 

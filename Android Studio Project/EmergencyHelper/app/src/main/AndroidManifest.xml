@@ -30,7 +30,11 @@
             android:value="@integer/google_play_services_version" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
+<<<<<<< HEAD
+            android:value="@string/google_maps_key_pedro" />
+=======
             android:value="@string/google_maps_key_paulo_desktop" />
+>>>>>>> master
 
         <activity android:name=".view.MapsActivity">
             <intent-filter>
