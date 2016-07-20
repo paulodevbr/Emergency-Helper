@@ -2,6 +2,9 @@ package app.com.bugdroidbuilder.paulo.emergencyhelper.view;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -16,29 +19,36 @@ import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.Gson;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.Set;
 
 import app.com.bugdroidbuilder.paulo.emergencyhelper.R;
-import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.AsyncHospitalCollection;
-import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.AsyncHospitalInterface;
+import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.AsyncHospital;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.HospitalController;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.HospitalMarkerClickListener;
-import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.PermissionHandler;
+import app.com.bugdroidbuilder.paulo.emergencyhelper.service.FirebaseController;
+import app.com.bugdroidbuilder.paulo.emergencyhelper.service.PermissionHandler;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.TelefoneHandler;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.model.Hospital;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback, AsyncHospitalInterface {
-    private final PermissionHandler permissionHandler = new PermissionHandler();
+public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
+ 
+   private final PermissionHandler permissionHandler = new PermissionHandler();
+
     @Bind(R.id.fab_call)
     FloatingActionButton fabCall;
     @Bind(R.id.fab_navigate)
     FloatingActionButton fabNavigate;
     @Bind(R.id.fab_cancel_maps)
     FloatingActionButton fabCancel;
+
     private Activity activity = this;
     private GoogleMap mMap;
     private MapFragment mapFragment;
@@ -54,12 +64,28 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         permissionHandler.requestPermissionNetworkState(this);
 
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        mapFragment = (MapFragment) getFragmentManager()
-                .findFragmentById(R.id.map);
+        if(FirebaseController.isOnline(this)) {
 
-        final Toolbar toolbar = (Toolbar) findViewById(R.id.maps_toolbar);
-        ToolbarSupport.startToolbar(this, toolbar,"Emergency Helper");
+            // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+            mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
+
+            final Toolbar toolbar = (Toolbar) findViewById(R.id.maps_toolbar);
+            ToolbarSupport.startToolbar(this, toolbar, "Emergency Helper");
+
+            this.loadButton();
+
+            AsyncHospital asyncHospital = new AsyncHospital();
+            asyncHospital.execute();
+
+            mapFragment.getMapAsync(this);
+
+        }else{
+
+
+        }
+    }
+
+    private void loadButton(){
 
         fabCall.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,19 +101,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         });
 
-//        fabNavigate.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                navegar();
-//            }
-//        });
-
-
-        AsyncHospitalCollection asyncHospitalCollection = new AsyncHospitalCollection(this);
-        asyncHospitalCollection.execute();
-        activity = this;
+        //fabNavigate.setOnClickListener(new View.OnClickListener() {
+        //    @Override
+        //    public void onClick(View v) {
+        //        navegar();
+        //    }
+        //});
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -123,13 +143,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         LatLng mylatlng = new LatLng(-16.6871724, -49.257001);
 
-        for (Hospital hospital : setHospital) {
-            mMap.addMarker(HospitalController.getHospitalMark(this, hospital));
-        }
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(mylatlng, zoomInicial), 1500, null);
-
-        HospitalMarkerClickListener hospitalMarkerClickListener = new HospitalMarkerClickListener(setHospital, this);
-        mMap.setOnMarkerClickListener(hospitalMarkerClickListener);
 
         UiSettings uiSettings = mMap.getUiSettings();
         uiSettings.setMapToolbarEnabled(false);
@@ -167,13 +181,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         TelefoneHandler.cancelarLigacao();
     }
 
-    @Override
-    public void processFinishHospital(Set<Hospital> output) {
-
-        this.setHospital = output;
-        mapFragment.getMapAsync(this);
-    }
-
     public void hideButtons() {
         fabCall.hide();
         fabNavigate.hide();
@@ -182,5 +189,45 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void showButtons() {
         fabNavigate.show();
         fabCall.show();
+    }
+
+    private Bitmap createBitmapIcon(){
+
+        Drawable circle = this.getResources().getDrawable(R.drawable.place_hospital);
+        Canvas canvas = new Canvas();
+        Bitmap bitmap = Bitmap.createBitmap(circle.getIntrinsicWidth(), circle.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        canvas.setBitmap(bitmap);
+        circle.setBounds(0, 0, circle.getIntrinsicWidth(), circle.getIntrinsicHeight());
+        circle.draw(canvas);
+
+        return(bitmap);
+    }
+
+    @Subscribe
+    public void onEvent(Set<Hospital> setHospital){
+
+        this.setHospital = setHospital;
+
+        HospitalController hospitalController = new HospitalController(this.createBitmapIcon());
+
+        for(Hospital hospital : setHospital) {
+            MarkerOptions marker = hospitalController.getHospitalMark(hospital);
+            mMap.addMarker(marker);
+        }
+
+        HospitalMarkerClickListener hospitalMarkerClickListener = new HospitalMarkerClickListener(setHospital, this);
+        mMap.setOnMarkerClickListener(hospitalMarkerClickListener);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
     }
 }

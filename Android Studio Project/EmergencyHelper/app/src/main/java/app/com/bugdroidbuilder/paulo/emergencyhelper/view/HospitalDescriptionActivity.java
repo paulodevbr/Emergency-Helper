@@ -25,6 +25,8 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
+import org.greenrobot.eventbus.EventBus;
+
 import app.com.bugdroidbuilder.paulo.emergencyhelper.R;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.TelefoneHandler;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.model.Hospital;
@@ -62,8 +64,7 @@ public class HospitalDescriptionActivity extends AppCompatActivity {
     Toolbar mToolbar;
 
     Target mPicassoTarget;
-    Hospital hospital;
-
+    private Hospital hospital;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,27 +72,17 @@ public class HospitalDescriptionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_hospital_description);
 
         ButterKnife.bind(this);
-        Intent intent = getIntent();
-        hospital = new Hospital(intent.getStringExtra("nome"),
-                intent.getStringExtra("telefone"),
-                intent.getStringExtra("descricao"),
-                intent.getStringExtra("endereco"),
-                intent.getDoubleExtra("latitude", 0),
-                intent.getDoubleExtra("longitude", 0));
+        this.hospital = EventBus.getDefault().removeStickyEvent(Hospital.class);
 
         preencherCampos(hospital);
-
         configurarBarraDeTitulo(hospital.getNome());
-
         carregarFoto(hospital);
-
         configurarFab(hospital);
-
     }
 
     private void carregarFoto(Hospital hospital) {
-        Intent intent = getIntent();
-        String linkImagem = intent.getStringExtra("imagem");
+
+        String linkImagem = hospital.getFotos().get("imagem1");
         if (mPicassoTarget == null) {
             mPicassoTarget = new Target() {
                 @Override
@@ -111,9 +102,8 @@ public class HospitalDescriptionActivity extends AppCompatActivity {
                 }
             };
         }
-        Picasso.with(this)
-                .load(linkImagem)
-                .into(mPicassoTarget);
+
+        Picasso.with(this).load(linkImagem).into(mPicassoTarget);
     }
 
     private void preencherCampos(Hospital hospital) {
@@ -121,9 +111,7 @@ public class HospitalDescriptionActivity extends AppCompatActivity {
 
         txtTelefoneHospital.setText(hospital.getTelefone());
         txtTelefoneHospital.setPaintFlags(txtTelefoneHospital.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-
         txtTelefoneHospital.setText(String.valueOf(hospital.getTelefone()));
-
 
         txtEspecialidade.setText(hospital.getEndereco());
 

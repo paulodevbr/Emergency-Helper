@@ -16,16 +16,13 @@ public class TelefoneHandler {
     private static int TEMPO_CONTAGEM = 5000;
     private static boolean cancelaLigacao = false;
 
-
-
-
     public static void ligarEmergencia(final Activity activity, String numeroEmergencia, int popupId,
                                        int fabId, int msgId) {
 
         String uri = "tel:" + numeroEmergencia.trim();
         final Intent intent;
 
-        if (PermissionHandler.permissionCall) {
+        if (app.com.bugdroidbuilder.paulo.emergencyhelper.controller.PermissionHandler.permissionCall) {
             intent = new Intent(Intent.ACTION_CALL);
 
         } else {
