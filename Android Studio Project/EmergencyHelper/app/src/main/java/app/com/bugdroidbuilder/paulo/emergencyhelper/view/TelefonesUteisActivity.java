@@ -16,6 +16,9 @@ import app.com.bugdroidbuilder.paulo.emergencyhelper.R;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.PermissionHandler;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.TelefoneHandler;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.model.TelefoneUtil;
+import app.com.bugdroidbuilder.paulo.emergencyhelper.view.components.RecyclerViewListener;
+import app.com.bugdroidbuilder.paulo.emergencyhelper.view.components.TelefonesAdapter;
+import app.com.bugdroidbuilder.paulo.emergencyhelper.view.components.ToolbarSupport;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 

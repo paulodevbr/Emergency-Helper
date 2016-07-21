@@ -22,7 +22,7 @@ public class TelefoneHandler {
         String uri = "tel:" + numeroEmergencia.trim();
         final Intent intent;
 
-        if (app.com.bugdroidbuilder.paulo.emergencyhelper.controller.PermissionHandler.permissionCall) {
+        if (PermissionHandler.permissionCall) {
             intent = new Intent(Intent.ACTION_CALL);
 
         } else {
