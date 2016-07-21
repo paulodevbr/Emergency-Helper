@@ -1,11 +1,22 @@
 package app.com.bugdroidbuilder.paulo.emergencyhelper.model;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
+
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+
 import java.util.Map;
+
+import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.PointController;
 
 /**
  * Created by pedro on 17/06/16.
  */
-public class Hospital {
+public class Hospital implements Point{
 
     private String storageId;
     private String tipo;
@@ -25,42 +36,59 @@ public class Hospital {
     }
 
     public String getStorageId() {
-        return storageId;
+        return this.storageId;
     }
 
     public String getTipo() {
-        return tipo;
+        return this.tipo;
     }
 
+    @Override
     public double getLatitude() {
-        return latitude;
+        return this.latitude;
     }
 
+    @Override
     public double getLongitude() {
-        return longitude;
+        return this.longitude;
     }
 
     public String getNome() {
-        return nome;
+        return this.nome;
     }
 
     public String getTelefone() {
-        return telefone;
+        return this.telefone;
     }
 
     public String getEndereco() {
-        return endereco;
+        return this.endereco;
     }
 
     public String getDescricao() {
-        return descricao;
+        return this.descricao;
     }
 
     public Map<String, String> getFotos() {
-        return fotos;
+        return this.fotos;
     }
 
     public int getNota() {
-        return nota;
+        return this.nota;
+    }
+
+    @Override
+    public MarkerOptions drawPoint(Context context) {
+
+        Bitmap bitmap = PointController.createBitmapHospitalIcon(context);
+        LatLng position = new LatLng(this.getLatitude(), this.getLongitude());
+        BitmapDescriptor icon = BitmapDescriptorFactory.fromBitmap(bitmap);
+        MarkerOptions mark = new MarkerOptions()
+                .position(position)
+                .title(this.nome)
+                .snippet(this.endereco + "\nTel: " + this.telefone)
+                .icon(icon);
+
+        return(mark);
     }
 }

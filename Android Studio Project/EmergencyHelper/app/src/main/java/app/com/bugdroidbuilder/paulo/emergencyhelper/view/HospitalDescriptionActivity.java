@@ -30,6 +30,7 @@ import org.greenrobot.eventbus.EventBus;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.R;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.TelefoneHandler;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.model.Hospital;
+import app.com.bugdroidbuilder.paulo.emergencyhelper.view.components.ToolbarSupport;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 

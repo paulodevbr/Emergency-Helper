@@ -31,6 +31,7 @@ public class HospitalListener implements ValueEventListener {
 
     @Override
     public void onCancelled(DatabaseError databaseError) {
+    "a".toString();
     }
 
 }
