@@ -18,6 +18,9 @@ import java.util.Set;
 
 import app.com.bugdroidbuilder.paulo.emergencyhelper.R;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.model.Hospital;
+import app.com.bugdroidbuilder.paulo.emergencyhelper.view.components.HospitaisAdapter;
+import app.com.bugdroidbuilder.paulo.emergencyhelper.view.components.RecyclerViewListener;
+import app.com.bugdroidbuilder.paulo.emergencyhelper.view.components.ToolbarSupport;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 

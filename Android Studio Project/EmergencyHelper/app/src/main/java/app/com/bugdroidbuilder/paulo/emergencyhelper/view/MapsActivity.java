@@ -2,9 +2,7 @@ package app.com.bugdroidbuilder.paulo.emergencyhelper.view;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.drawable.Drawable;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -20,21 +18,28 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.gson.Gson;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import app.com.bugdroidbuilder.paulo.emergencyhelper.R;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.AsyncHospital;
-import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.HospitalController;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.HospitalMarkerClickListener;
-import app.com.bugdroidbuilder.paulo.emergencyhelper.service.FirebaseController;
-import app.com.bugdroidbuilder.paulo.emergencyhelper.service.PermissionHandler;
+import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.PointController;
+import app.com.bugdroidbuilder.paulo.emergencyhelper.model.Point;
+import app.com.bugdroidbuilder.paulo.emergencyhelper.model.User;
+import app.com.bugdroidbuilder.paulo.emergencyhelper.service.LocationService;
+import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.PermissionHandler;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.TelefoneHandler;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.model.Hospital;
+import app.com.bugdroidbuilder.paulo.emergencyhelper.service.ServicesVerification;
+import app.com.bugdroidbuilder.paulo.emergencyhelper.view.components.ToolbarSupport;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -53,18 +58,24 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private GoogleMap mMap;
     private MapFragment mapFragment;
     private Set<Hospital> setHospital;
+    private User user = null;
+    private LocationService locationService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_maps);
-        ButterKnife.bind(this);
 
+        // Iniciando serviços
+        ButterKnife.bind(this);
+        this.locationService = new LocationService(this);
+        FirebaseDatabase.getInstance().getReference().keepSynced(true);
+        //---------------------
 
         permissionHandler.requestPermissionNetworkState(this);
 
-        if(FirebaseController.isOnline(this)) {
+        if(ServicesVerification.isOnline(this)) {
 
             // Obtain the SupportMapFragment and get notified when the map is ready to be used.
             mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
@@ -74,14 +85,15 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
             this.loadButton();
 
+            this.locationService.connect();
+
             AsyncHospital asyncHospital = new AsyncHospital();
             asyncHospital.execute();
-
             mapFragment.getMapAsync(this);
 
         }else{
 
-
+            // Exibir lista
         }
     }
 
@@ -101,12 +113,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         });
 
-        //fabNavigate.setOnClickListener(new View.OnClickListener() {
-        //    @Override
-        //    public void onClick(View v) {
-        //        navegar();
-        //    }
-        //});
+        fabNavigate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                navegar();
+            }
+        });
     }
 
     @Override
@@ -129,34 +141,32 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        showButtons();
-    }
-
-    @Override
     public void onMapReady(GoogleMap googleMap) {
         permissionHandler.requestPermissionLocation(this);
 
-        int zoomInicial = 12;
         mMap = googleMap;
-
-        LatLng mylatlng = new LatLng(-16.6871724, -49.257001);
-
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(mylatlng, zoomInicial), 1500, null);
 
         UiSettings uiSettings = mMap.getUiSettings();
         uiSettings.setMapToolbarEnabled(false);
     }
 
     public void navegar(){
-        hideButtons();
+        /*hideButtons();
         Intent intent = new Intent(this, NavigateActivity.class);
         Gson gson = new Gson();
         String json = gson.toJson(setHospital);
 
         intent.putExtra("hospitais",json);
-        startActivity(intent);
+        startActivity(intent);*/
+
+        List<Point> hospitalPointList = new ArrayList<>();
+        for(Hospital hospital : this.setHospital){
+            hospitalPointList.add(hospital);
+        }
+
+        if(this.user != null) {
+            hospitalPointList = PointController.orderByReference(this.user, hospitalPointList);
+        }
     }
 
     public void chamarAjuda() {
@@ -172,8 +182,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 R.id.popup_ligacao,
                 R.id.fab_cancel_maps,
                 R.id.text_count_down_maps);
-
-
     }
 
     public void cancelarLigacao() {
@@ -191,27 +199,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         fabCall.show();
     }
 
-    private Bitmap createBitmapIcon(){
-
-        Drawable circle = this.getResources().getDrawable(R.drawable.place_hospital);
-        Canvas canvas = new Canvas();
-        Bitmap bitmap = Bitmap.createBitmap(circle.getIntrinsicWidth(), circle.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
-        canvas.setBitmap(bitmap);
-        circle.setBounds(0, 0, circle.getIntrinsicWidth(), circle.getIntrinsicHeight());
-        circle.draw(canvas);
-
-        return(bitmap);
-    }
-
     @Subscribe
     public void onEvent(Set<Hospital> setHospital){
 
         this.setHospital = setHospital;
 
-        HospitalController hospitalController = new HospitalController(this.createBitmapIcon());
-
         for(Hospital hospital : setHospital) {
-            MarkerOptions marker = hospitalController.getHospitalMark(hospital);
+            MarkerOptions marker = hospital.drawPoint(this);
             mMap.addMarker(marker);
         }
 
@@ -219,15 +213,48 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mMap.setOnMarkerClickListener(hospitalMarkerClickListener);
     }
 
+    @Subscribe
+    public void onEvent(Location myLocation){
+
+        if((myLocation != null) && (this.mMap != null)){
+
+            if(ServicesVerification.isGpsEnable(this)) {
+                this.user = new User(myLocation);
+                LatLng latLng = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
+
+                int zoomInicial = 12;
+
+                MarkerOptions userMarker = this.user.drawPoint(this);
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoomInicial), 1500, null);
+                mMap.addMarker(userMarker);
+            }
+            this.locationService.disconnect();
+        }
+    }
+
     @Override
     public void onStart() {
         super.onStart();
         EventBus.getDefault().register(this);
+        this.locationService.connect();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        showButtons();
     }
 
     @Override
     public void onStop() {
         EventBus.getDefault().unregister(this);
+        this.locationService.disconnect();
         super.onStop();
+    }
+
+    @Override
+    public void onDestroy(){
+        this.locationService.disconnect();
+        super.onDestroy();
     }
 }
