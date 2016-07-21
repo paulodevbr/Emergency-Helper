@@ -1,4 +1,4 @@
-package app.com.bugdroidbuilder.paulo.emergencyhelper.service;
+package app.com.bugdroidbuilder.paulo.emergencyhelper.controller;
 
 import android.Manifest;
 import android.app.Activity;
