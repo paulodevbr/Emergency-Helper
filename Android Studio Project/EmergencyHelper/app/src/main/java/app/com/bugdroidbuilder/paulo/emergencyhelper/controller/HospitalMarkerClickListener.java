@@ -11,7 +11,6 @@ import org.greenrobot.eventbus.EventBus;
 import java.util.Set;
 
 import app.com.bugdroidbuilder.paulo.emergencyhelper.model.Hospital;
-import app.com.bugdroidbuilder.paulo.emergencyhelper.view.HospitalDescriptionActivity;
 
 /**
  * Created by pedro on 09/07/16.

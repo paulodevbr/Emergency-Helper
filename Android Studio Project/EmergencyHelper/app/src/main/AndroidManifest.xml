@@ -32,16 +32,16 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key_pedro" />
 
-        <activity android:name=".view.MapsActivity">
+        <activity android:name=".controller.MapsActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.TelefonesUteisActivity" />
-        <activity android:name=".view.HospitalDescriptionActivity" />
-        <activity android:name=".view.NavigateActivity"></activity>
+        <activity android:name=".controller.TelefonesUteisActivity" />
+        <activity android:name=".controller.HospitalDescriptionActivity" />
+        <activity android:name=".controller.NavigateActivity"></activity>
     </application>
 
 </manifest>

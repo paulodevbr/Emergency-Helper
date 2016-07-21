@@ -1,4 +1,4 @@
-package app.com.bugdroidbuilder.paulo.emergencyhelper.view.components;
+package app.com.bugdroidbuilder.paulo.emergencyhelper.components;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;

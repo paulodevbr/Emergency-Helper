@@ -1,6 +1,5 @@
-package app.com.bugdroidbuilder.paulo.emergencyhelper.view;
+package app.com.bugdroidbuilder.paulo.emergencyhelper.controller;
 
-import android.location.Location;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -12,15 +11,12 @@ import android.view.View;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Set;
 
 import app.com.bugdroidbuilder.paulo.emergencyhelper.R;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.model.Hospital;
-import app.com.bugdroidbuilder.paulo.emergencyhelper.view.components.HospitaisAdapter;
-import app.com.bugdroidbuilder.paulo.emergencyhelper.view.components.RecyclerViewListener;
-import app.com.bugdroidbuilder.paulo.emergencyhelper.view.components.ToolbarSupport;
+import app.com.bugdroidbuilder.paulo.emergencyhelper.components.HospitaisAdapter;
+import app.com.bugdroidbuilder.paulo.emergencyhelper.components.RecyclerViewListener;
+import app.com.bugdroidbuilder.paulo.emergencyhelper.components.ToolbarSupport;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 

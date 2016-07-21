@@ -1,4 +1,4 @@
-package app.com.bugdroidbuilder.paulo.emergencyhelper.view;
+package app.com.bugdroidbuilder.paulo.emergencyhelper.controller;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -19,7 +19,6 @@ import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.gson.Gson;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -29,17 +28,12 @@ import java.util.List;
 import java.util.Set;
 
 import app.com.bugdroidbuilder.paulo.emergencyhelper.R;
-import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.AsyncHospital;
-import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.HospitalMarkerClickListener;
-import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.PointController;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.model.Point;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.model.User;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.service.LocationService;
-import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.PermissionHandler;
-import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.TelefoneHandler;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.model.Hospital;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.service.ServicesVerification;
-import app.com.bugdroidbuilder.paulo.emergencyhelper.view.components.ToolbarSupport;
+import app.com.bugdroidbuilder.paulo.emergencyhelper.components.ToolbarSupport;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 

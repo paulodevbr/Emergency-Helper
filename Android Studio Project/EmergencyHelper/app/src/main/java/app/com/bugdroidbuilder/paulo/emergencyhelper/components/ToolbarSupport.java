@@ -1,4 +1,4 @@
-package app.com.bugdroidbuilder.paulo.emergencyhelper.view.components;
+package app.com.bugdroidbuilder.paulo.emergencyhelper.components;
 
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;

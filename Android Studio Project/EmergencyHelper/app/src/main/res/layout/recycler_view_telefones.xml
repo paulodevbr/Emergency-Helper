@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="app.com.bugdroidbuilder.paulo.emergencyhelper.view.TelefonesUteisActivity"
+    tools:context=".controller.TelefonesUteisActivity"
     tools:showIn="@layout/activity_telefones">
 
     <android.support.v7.widget.RecyclerView

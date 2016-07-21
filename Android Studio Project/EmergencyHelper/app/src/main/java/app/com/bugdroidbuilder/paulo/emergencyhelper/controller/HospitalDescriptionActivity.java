@@ -1,4 +1,4 @@
-package app.com.bugdroidbuilder.paulo.emergencyhelper.view;
+package app.com.bugdroidbuilder.paulo.emergencyhelper.controller;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -28,9 +28,8 @@ import com.squareup.picasso.Target;
 import org.greenrobot.eventbus.EventBus;
 
 import app.com.bugdroidbuilder.paulo.emergencyhelper.R;
-import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.TelefoneHandler;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.model.Hospital;
-import app.com.bugdroidbuilder.paulo.emergencyhelper.view.components.ToolbarSupport;
+import app.com.bugdroidbuilder.paulo.emergencyhelper.components.ToolbarSupport;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
