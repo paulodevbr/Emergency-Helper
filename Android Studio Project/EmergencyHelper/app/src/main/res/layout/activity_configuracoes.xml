@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+    tools:context="app.com.bugdroidbuilder.paulo.emergencyhelper.controller.activity.ConfiguracoesActivity">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/configuracoes_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:background="?attr/colorPrimary"
+            android:elevation="6dp"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="@style/ToolbarTheme"
+            app:popupTheme="@style/ToolbarTheme"/>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <RelativeLayout
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:layout_marginTop="?actionBarSize"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="16dp">
+        
+        <TextView
+            android:id="@+id/configuracoes_descricao"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Coloque o número que deseja ligar em caso de emergência"
+            android:textSize="20sp"
+            android:layout_marginTop="16dp"
+            android:gravity="start"/>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/settings_height_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/configuracoes_descricao"
+            android:animateLayoutChanges="true"
+            android:theme="@style/AppTheme">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/settings_height_edt"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+
+                android:inputType="number"
+                android:maxLength="12"
+                android:theme="@style/AppTheme"
+                android:hint="Telefone"
+
+
+                />
+        </android.support.design.widget.TextInputLayout>
+
+        <Button
+            android:id="@+id/configuracoes_salvar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Salvar"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="70dp" />
+
+    </RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>

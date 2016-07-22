@@ -42,7 +42,8 @@
         <activity android:name=".controller.activity.TelefonesEmergenciaActivity" />
         <activity android:name=".controller.activity.HospitalDescriptionActivity" />
         <activity android:name=".controller.activity.NavigateActivity" />
-        <activity android:name=".controller.activity.SobreActivity"></activity>
+        <activity android:name=".controller.activity.SobreActivity" />
+        <activity android:name=".controller.activity.ConfiguracoesActivity"></activity>
     </application>
 
 </manifest>

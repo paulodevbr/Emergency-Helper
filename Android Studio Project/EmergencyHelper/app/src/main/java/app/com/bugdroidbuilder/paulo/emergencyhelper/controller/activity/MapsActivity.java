@@ -127,6 +127,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
             Toast toast = Toast.makeText(this, "Modo offline iniciado", Toast.LENGTH_LONG);
             toast.show();
+            Intent intent = new Intent(this, TelefonesEmergenciaActivity.class);
+            intent.putExtra("online", false);
+            startActivity(intent);
         }
 
 
@@ -191,6 +194,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             startActivity(new Intent(this, SobreActivity.class));
             return true;
         }
+//        else if(id ==R.id.menu_configuracoes){
+//            startActivity(new Intent(this, ConfiguracoesActivity.class));
+//            return true;
+//        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -287,8 +294,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 //            }
 
             //Abre a tela de telefones de emergência, caso não tenha rede
-            Intent intent = new Intent(this, TelefonesEmergenciaActivity.class);
-            startActivity(intent);
+
         }
 
         this.closeDatabase = true;
@@ -324,7 +330,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onStart() {
         super.onStart();
         EventBus.getDefault().register(this);
-        this.locationService.connect();
     }
 
     @Override

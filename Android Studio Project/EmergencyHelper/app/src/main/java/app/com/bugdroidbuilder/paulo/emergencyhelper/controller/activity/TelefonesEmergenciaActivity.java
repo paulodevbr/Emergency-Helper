@@ -37,12 +37,14 @@ public class TelefonesEmergenciaActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_telefones);
         boolean online = getIntent().getBooleanExtra("online", false);
-
         if(!online){
             setTheme(R.style.AppThemeOffline);
         }
+        setContentView(R.layout.activity_telefones);
+
+
+
         ButterKnife.bind(this);
 
         ToolbarSupport.startToolbarWithArrow(this, toolbar, "Telefones úteis");
