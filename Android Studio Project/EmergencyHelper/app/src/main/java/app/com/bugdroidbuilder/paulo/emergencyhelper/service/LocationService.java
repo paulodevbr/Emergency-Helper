@@ -1,6 +1,7 @@
 package app.com.bugdroidbuilder.paulo.emergencyhelper.service;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -15,17 +16,26 @@ import com.google.android.gms.location.LocationServices;
 
 import org.greenrobot.eventbus.EventBus;
 
+import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.PermissionHandler;
+
 /**
  * Created by pedro on 20/07/16.
  */
 public class LocationService implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     private GoogleApiClient googleApiClient;
-    private Context context;
+    private Activity activity;
+    private PermissionHandler permissionHandler;
 
-    public LocationService(Context context) {
-        this.context = context;
-        this.googleApiClient = new GoogleApiClient.Builder(context)
+    public LocationService(Activity activity) {
+        this.activity = activity;
+
+        // Requisitando permição para ver localização
+        this.permissionHandler = new PermissionHandler();
+        this.permissionHandler.requestPermissionLocation(this.activity);
+
+        // Iniciando google API client
+        this.googleApiClient = new GoogleApiClient.Builder(this.activity.getApplicationContext())
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .addApi(LocationServices.API)
@@ -45,7 +55,9 @@ public class LocationService implements GoogleApiClient.ConnectionCallbacks, Goo
     @Override
     public void onConnected(@Nullable Bundle bundle) {
 
-        if (ActivityCompat.checkSelfPermission(this.context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this.context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        Context context = this.activity.getApplicationContext();
+
+        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
             // here to request the missing permissions, and then overriding
@@ -57,7 +69,7 @@ public class LocationService implements GoogleApiClient.ConnectionCallbacks, Goo
         }
         Location myLocation = LocationServices.FusedLocationApi.getLastLocation(this.googleApiClient);
 
-        if( !ServicesVerification.isGpsEnable(this.context)){
+        if( !ServicesVerification.isGpsEnable(context)){
             myLocation = new Location("vazio");
         }
 

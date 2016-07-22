@@ -38,7 +38,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
- 
+
    private final PermissionHandler permissionHandler = new PermissionHandler();
 
     @Bind(R.id.fab_call)
@@ -54,6 +54,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private Set<Hospital> setHospital;
     private User user = null;
     private LocationService locationService;
+    private boolean closeLocation = false;
+    private boolean closeDatabase = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,8 +69,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         FirebaseDatabase.getInstance().getReference().keepSynced(true);
         //---------------------
 
+        // Requisitando permição de rede
         permissionHandler.requestPermissionNetworkState(this);
 
+        // Verificando se a rede está disponivel
         if(ServicesVerification.isOnline(this)) {
 
             // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -79,16 +83,25 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
             this.loadButton();
 
+            // Iniciando conexão com o serviço de localização (GPS)
             this.locationService.connect();
 
-            AsyncHospital asyncHospital = new AsyncHospital();
-            asyncHospital.execute();
+            this.startAsyncTask();
+
+            // Iniciando mapa
             mapFragment.getMapAsync(this);
 
         }else{
 
             // Exibir lista
         }
+    }
+
+    private void startAsyncTask(){
+
+        // Iniciando asyncTask
+        AsyncHospital asyncHospital = new AsyncHospital();
+        asyncHospital.execute();
     }
 
     private void loadButton(){
@@ -126,6 +139,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         hideButtons();
+
         if (id == R.id.menu_telefones_uteis) {
             startActivity(new Intent(this, TelefonesUteisActivity.class));
             return true;
@@ -134,10 +148,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         return super.onOptionsItemSelected(item);
     }
 
+    // Mapa disponível para uso
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        permissionHandler.requestPermissionLocation(this);
-
         mMap = googleMap;
 
         UiSettings uiSettings = mMap.getUiSettings();
@@ -193,6 +206,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         fabCall.show();
     }
 
+    // Armazenando lista de hospitais e inserindo marcadores no mapa
     @Subscribe
     public void onEvent(Set<Hospital> setHospital){
 
@@ -203,15 +217,22 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             mMap.addMarker(marker);
         }
 
+        // Definindo clickListener para os marcadores
         HospitalMarkerClickListener hospitalMarkerClickListener = new HospitalMarkerClickListener(setHospital, this);
         mMap.setOnMarkerClickListener(hospitalMarkerClickListener);
+
+        this.closeDatabase = true;
     }
 
+    // Buscando localização do usuario (GPS)
     @Subscribe
     public void onEvent(Location myLocation){
 
+        // Verificando se o mapa/localização existe
         if((myLocation != null) && (this.mMap != null)){
 
+            // Verificando se o GPS está habilitado
+            // Se estiver insere o marcador do usuario
             if(ServicesVerification.isGpsEnable(this)) {
                 this.user = new User(myLocation);
                 LatLng latLng = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
@@ -222,7 +243,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoomInicial), 1500, null);
                 mMap.addMarker(userMarker);
             }
+
+            // Desconectando serviço de localização
             this.locationService.disconnect();
+            this.closeLocation = true;
         }
     }
 
@@ -236,6 +260,15 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onResume() {
         super.onResume();
+        // Verificando se a localização já foi encerrada definitivamente
+        // Caso não tenha sido, reabrir conexão.
+        if(!this.closeLocation){
+            this.locationService.connect();
+        }
+
+        if(!this.closeDatabase){
+            this.startAsyncTask();
+        }
         showButtons();
     }
 
