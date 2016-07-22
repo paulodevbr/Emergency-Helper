@@ -11,12 +11,14 @@ import android.view.View;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import app.com.bugdroidbuilder.paulo.emergencyhelper.R;
-import app.com.bugdroidbuilder.paulo.emergencyhelper.model.Hospital;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.components.HospitaisAdapter;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.components.RecyclerViewListener;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.components.ToolbarSupport;
+import app.com.bugdroidbuilder.paulo.emergencyhelper.model.Hospital;
+import app.com.bugdroidbuilder.paulo.emergencyhelper.model.Point;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -28,7 +30,7 @@ public class NavigateActivity extends AppCompatActivity {
     @Bind(R.id.list_hospitais)
     RecyclerView recyclerView;
 
-    private ArrayList<Hospital> listaHospitais = new ArrayList<>();
+    private List<Hospital> listaHospitais = new ArrayList<>();
 
     private HospitaisAdapter mAdapter;
 
@@ -55,6 +57,9 @@ public class NavigateActivity extends AppCompatActivity {
 
     public void iniciaRecyclerView() {
 
+        for(Point pt: MapsActivity.hospitais){
+            listaHospitais.add((Hospital)pt);
+        }
 
         mAdapter = new HospitaisAdapter(listaHospitais);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());

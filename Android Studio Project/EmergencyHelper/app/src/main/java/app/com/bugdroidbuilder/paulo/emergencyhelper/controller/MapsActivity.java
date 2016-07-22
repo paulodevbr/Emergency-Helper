@@ -38,7 +38,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
-
+    public static List<Point> hospitais;
    private final PermissionHandler permissionHandler = new PermissionHandler();
 
     @Bind(R.id.fab_call)
@@ -173,7 +173,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         if(this.user != null) {
             hospitalPointList = PointController.orderByReference(this.user, hospitalPointList);
+            hospitais = hospitalPointList;
         }
+
+        Intent intent = new Intent(this, NavigateActivity.class);
+        startActivity(intent);
     }
 
     public void chamarAjuda() {

@@ -1,11 +1,9 @@
 package app.com.bugdroidbuilder.paulo.emergencyhelper.controller;
 
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -28,8 +26,8 @@ import com.squareup.picasso.Target;
 import org.greenrobot.eventbus.EventBus;
 
 import app.com.bugdroidbuilder.paulo.emergencyhelper.R;
-import app.com.bugdroidbuilder.paulo.emergencyhelper.model.Hospital;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.components.ToolbarSupport;
+import app.com.bugdroidbuilder.paulo.emergencyhelper.model.Hospital;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -181,24 +179,7 @@ public class HospitalDescriptionActivity extends AppCompatActivity {
         mFabFavorito.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String tagEndereco = getResources().getString(R.string.endereco_maps);
-                String linkMaps = getResources().getString(R.string.link_maps);
-                String pacoteMaps = getResources().getString(R.string.pacote_maps);
-                // Create a Uri from an intent string. Use the result to create an Intent.
-                StringBuilder endereco = new StringBuilder().append(tagEndereco)
-                        .append(hospital.getLatitude())
-                        .append(",")
-                        .append(hospital.getLongitude());
-
-                StringBuilder maps = new StringBuilder().append(linkMaps).append(endereco.toString());
-                Uri gmmIntentUri = Uri.parse(maps.toString());
-
-
-                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-
-                mapIntent.setPackage(pacoteMaps);
-
-                startActivity(mapIntent);
+                NavigationHandler.navegar(getParent(), hospital.getLatitude(), hospital.getLongitude());
             }
         });
     }

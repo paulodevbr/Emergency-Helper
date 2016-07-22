@@ -2,13 +2,13 @@ package app.com.bugdroidbuilder.paulo.emergencyhelper.model;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.io.Serializable;
 import java.util.Map;
 
 import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.PointController;
@@ -16,7 +16,7 @@ import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.PointController;
 /**
  * Created by pedro on 17/06/16.
  */
-public class Hospital implements Point{
+public class Hospital implements Serializable, Point{
 
     private String storageId;
     private String tipo;
@@ -91,4 +91,5 @@ public class Hospital implements Point{
 
         return(mark);
     }
+
 }

@@ -33,8 +33,8 @@ public class HospitaisAdapter extends RecyclerView.Adapter<HospitaisAdapter.MyVi
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        Hospital telefoneUtil = listaHospitais.get(position);
-        holder.descricao.setText(telefoneUtil.getDescricao());
+        Hospital hospital = listaHospitais.get(position);
+        holder.descricao.setText(hospital.getNome());
     }
 
     @Override
