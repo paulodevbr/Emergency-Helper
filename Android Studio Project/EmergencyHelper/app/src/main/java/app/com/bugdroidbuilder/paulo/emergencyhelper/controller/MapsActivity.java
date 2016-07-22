@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -72,28 +73,31 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         // Requisitando permição de rede
         permissionHandler.requestPermissionNetworkState(this);
 
+        // Iniciando conexão com o serviço de localização (GPS)
+        this.locationService.connect();
+
+        // Iniciando asyncTask
+        this.startAsyncTask();
+
+        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+        mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
+
+        final Toolbar toolbar = (Toolbar) findViewById(R.id.maps_toolbar);
+        ToolbarSupport.startToolbar(this, toolbar, "Emergency Helper");
+
+        this.loadButton();
+
+
         // Verificando se a rede está disponivel
         if(ServicesVerification.isOnline(this)) {
-
-            // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-            mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
-
-            final Toolbar toolbar = (Toolbar) findViewById(R.id.maps_toolbar);
-            ToolbarSupport.startToolbar(this, toolbar, "Emergency Helper");
-
-            this.loadButton();
-
-            // Iniciando conexão com o serviço de localização (GPS)
-            this.locationService.connect();
-
-            this.startAsyncTask();
 
             // Iniciando mapa
             mapFragment.getMapAsync(this);
 
         }else{
 
-            // Exibir lista
+            Toast toast = Toast.makeText(this, "Modo offline iniciado", Toast.LENGTH_LONG);
+            toast.show();
         }
     }
 
@@ -216,14 +220,29 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         this.setHospital = setHospital;
 
-        for(Hospital hospital : setHospital) {
-            MarkerOptions marker = hospital.drawPoint(this);
-            mMap.addMarker(marker);
-        }
+        if(ServicesVerification.isOnline(this)) {
 
-        // Definindo clickListener para os marcadores
-        HospitalMarkerClickListener hospitalMarkerClickListener = new HospitalMarkerClickListener(setHospital, this);
-        mMap.setOnMarkerClickListener(hospitalMarkerClickListener);
+            for (Hospital hospital : setHospital) {
+                MarkerOptions marker = hospital.drawPoint(this);
+                mMap.addMarker(marker);
+            }
+
+            // Definindo clickListener para os marcadores
+            HospitalMarkerClickListener hospitalMarkerClickListener = new HospitalMarkerClickListener(setHospital, this);
+            mMap.setOnMarkerClickListener(hospitalMarkerClickListener);
+
+        }else{
+
+            // Exibir lista
+            List<Point> hospitalPointList = new ArrayList<>();
+            for(Hospital hospital : this.setHospital){
+                hospitalPointList.add(hospital);
+            }
+
+            if(this.user != null) {
+//                hospitalPointList = PointController.orderByReference(this.user, hospitalPointList);
+            }
+        }
 
         this.closeDatabase = true;
     }
