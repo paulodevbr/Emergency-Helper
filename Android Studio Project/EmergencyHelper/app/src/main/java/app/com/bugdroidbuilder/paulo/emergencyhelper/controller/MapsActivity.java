@@ -66,7 +66,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         // Iniciando serviços
         ButterKnife.bind(this);
         this.locationService = new LocationService(this);
-        FirebaseDatabase.getInstance().getReference().keepSynced(true);
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         //---------------------
 
         // Requisitando permição de rede
