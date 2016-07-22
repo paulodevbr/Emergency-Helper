@@ -5,4 +5,7 @@
     <color name="colorAccent">#FFFFFF</color>
     <color name="colorTitleText">#FEFEFE</color>
     <color name="colorBackground">#EEEEEE</color>
+
+    <color name="colorPrimaryOffline">#1976d2</color>
+    <color name="colorPrimaryDarkOffline">#0d47a1</color>
 </resources>

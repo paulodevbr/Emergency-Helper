@@ -38,7 +38,11 @@ public class TelefonesEmergenciaActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_telefones);
+        boolean online = getIntent().getBooleanExtra("online", false);
 
+        if(!online){
+            setTheme(R.style.AppThemeOffline);
+        }
         ButterKnife.bind(this);
 
         ToolbarSupport.startToolbarWithArrow(this, toolbar, "Telefones úteis");
@@ -74,7 +78,6 @@ public class TelefonesEmergenciaActivity extends AppCompatActivity {
 
 
     public void iniciaRecyclerView() {
-
 
         mAdapter = new TelefonesAdapter(listaTelefones);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());

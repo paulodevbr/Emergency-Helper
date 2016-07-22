@@ -9,6 +9,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -46,7 +49,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     public static List<Point> hospitais;
     private final PermissionHandler permissionHandler = new PermissionHandler();
 
-
+    @Bind(R.id.refresh_button)
+    ImageButton refreshButton;
     @Bind(R.id.maps_toolbar)
     Toolbar toolbar;
     @Bind(R.id.fab_call)
@@ -72,7 +76,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         setContentView(R.layout.activity_maps);
 
         startLayouts();
-
 
         startServices();
     }
@@ -138,6 +141,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private void loadButton(){
 
+        refreshButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onRefresh();
+            }
+        });
+
         fabCall.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -173,7 +183,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         hideButtons();
 
         if (id == R.id.menu_telefones_uteis) {
-            startActivity(new Intent(this, TelefonesEmergenciaActivity.class));
+            Intent intent = new Intent(this, TelefonesEmergenciaActivity.class);
+            intent.putExtra("online", true);
+            startActivity(intent);
             return true;
         }else if(id == R.id.menu_sobre){
             startActivity(new Intent(this, SobreActivity.class));

@@ -49,8 +49,7 @@ public class HospitalDescriptionActivity extends AppCompatActivity {
     TextView txtEspecialidade;
     @Bind(R.id.txt_descricao)
     TextView txtDescricaoHospital;
-    @Bind(R.id.txtMusicas)
-    TextView mTxtMusicas;
+
 
     @Nullable
     @Bind(R.id.coordinator)
