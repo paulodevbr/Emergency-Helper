@@ -46,7 +46,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     public static List<Point> hospitais;
     private final PermissionHandler permissionHandler = new PermissionHandler();
 
-  
+
     @Bind(R.id.maps_toolbar)
     Toolbar toolbar;
     @Bind(R.id.fab_call)
