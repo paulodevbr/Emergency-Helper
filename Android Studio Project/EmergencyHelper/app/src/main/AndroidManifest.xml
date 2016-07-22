@@ -30,7 +30,7 @@
             android:value="@integer/google_play_services_version" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_maps_key_julianny" />
+            android:value="@string/google_maps_key_paulo_notebook" />
 
         <activity android:name=".controller.activity.MapsActivity">
             <intent-filter>
@@ -39,7 +39,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".controller.activity.TelefonesUteisActivity" />
+        <activity android:name=".controller.activity.TelefonesEmergenciaActivity" />
         <activity android:name=".controller.activity.HospitalDescriptionActivity" />
         <activity android:name=".controller.activity.NavigateActivity" />
         <activity android:name=".controller.activity.SobreActivity"></activity>

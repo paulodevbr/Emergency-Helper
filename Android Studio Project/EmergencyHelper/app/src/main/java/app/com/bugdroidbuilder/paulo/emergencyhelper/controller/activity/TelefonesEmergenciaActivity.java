@@ -15,14 +15,14 @@ import java.util.List;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.R;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.handler.PermissionHandler;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.handler.TelefoneHandler;
-import app.com.bugdroidbuilder.paulo.emergencyhelper.model.TelefoneUtil;
+import app.com.bugdroidbuilder.paulo.emergencyhelper.model.TelefoneEmergencia;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.components.RecyclerViewListener;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.components.TelefonesAdapter;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.components.ToolbarSupport;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class TelefonesUteisActivity extends AppCompatActivity {
+public class TelefonesEmergenciaActivity extends AppCompatActivity {
     @Bind(R.id.telefones_toolbar)
     Toolbar toolbar;
     @Bind(R.id.list_telefones)
@@ -30,7 +30,7 @@ public class TelefonesUteisActivity extends AppCompatActivity {
 
     private final PermissionHandler permissionHandler = new PermissionHandler();
     private boolean cancelaLigacao = false;
-    private List<TelefoneUtil> listaTelefones = new ArrayList<>();
+    private List<TelefoneEmergencia> listaTelefones = new ArrayList<>();
     private TelefonesAdapter mAdapter;
     private Activity activity = this;
 
@@ -54,13 +54,13 @@ public class TelefonesUteisActivity extends AppCompatActivity {
 
     private void prepareTelefoneData() {
 
-        listaTelefones.add(new TelefoneUtil("SAMU", getResources().
+        listaTelefones.add(new TelefoneEmergencia("SAMU", getResources().
                 getString(R.string.telefone_samu)));
-        listaTelefones.add(new TelefoneUtil("Corpo de Bombeiros", getResources().
+        listaTelefones.add(new TelefoneEmergencia("Corpo de Bombeiros", getResources().
                 getString(R.string.telefone_corpo_de_bombeiros)));
-        listaTelefones.add(new TelefoneUtil("Polícia Militar", getResources().
+        listaTelefones.add(new TelefoneEmergencia("Polícia Militar", getResources().
                 getString(R.string.telefone_policia_militar)));
-        listaTelefones.add(new TelefoneUtil("Polícia Rodoviária Federal", getResources().
+        listaTelefones.add(new TelefoneEmergencia("Polícia Rodoviária Federal", getResources().
                 getString(R.string.telefone_policia_rodoviaria_federal)));
 
         mAdapter.notifyDataSetChanged();
@@ -87,10 +87,10 @@ public class TelefonesUteisActivity extends AppCompatActivity {
             @Override
             public void onClick(View view, int position) {
 
-                TelefoneUtil telefoneUtil = listaTelefones.get(position);
+                TelefoneEmergencia telefoneEmergencia = listaTelefones.get(position);
 
                 TelefoneHandler.ligarEmergencia(activity,
-                        telefoneUtil.getNumero(),
+                        telefoneEmergencia.getNumero(),
                         R.id.popup_telefones,
                         R.id.fab_cancel_telefones,
                         R.id.text_count_down_telefones);

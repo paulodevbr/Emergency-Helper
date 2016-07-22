@@ -10,16 +10,16 @@ import android.widget.TextView;
 import java.util.List;
 
 import app.com.bugdroidbuilder.paulo.emergencyhelper.R;
-import app.com.bugdroidbuilder.paulo.emergencyhelper.model.TelefoneUtil;
+import app.com.bugdroidbuilder.paulo.emergencyhelper.model.TelefoneEmergencia;
 
 /**
  * Created by paulo on 28/06/16.
  */
 public class TelefonesAdapter extends RecyclerView.Adapter<TelefonesAdapter.MyViewHolder> {
 
-    private List<TelefoneUtil> listaTelefones;
+    private List<TelefoneEmergencia> listaTelefones;
 
-    public TelefonesAdapter(List<TelefoneUtil> listaTelefones) {
+    public TelefonesAdapter(List<TelefoneEmergencia> listaTelefones) {
         this.listaTelefones = listaTelefones;
     }
 
@@ -33,8 +33,8 @@ public class TelefonesAdapter extends RecyclerView.Adapter<TelefonesAdapter.MyVi
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        TelefoneUtil telefoneUtil = listaTelefones.get(position);
-        holder.descricao.setText(telefoneUtil.getDescricao());
+        TelefoneEmergencia telefoneEmergencia = listaTelefones.get(position);
+        holder.descricao.setText(telefoneEmergencia.getDescricao());
     }
 
     @Override

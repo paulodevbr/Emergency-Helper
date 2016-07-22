@@ -1,6 +1,5 @@
 package app.com.bugdroidbuilder.paulo.emergencyhelper.controller.activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
@@ -43,10 +42,13 @@ import app.com.bugdroidbuilder.paulo.emergencyhelper.components.ToolbarSupport;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback{
     public static List<Point> hospitais;
-   private final PermissionHandler permissionHandler = new PermissionHandler();
+    private final PermissionHandler permissionHandler = new PermissionHandler();
 
+  
+    @Bind(R.id.maps_toolbar)
+    Toolbar toolbar;
     @Bind(R.id.fab_call)
     FloatingActionButton fabCall;
     @Bind(R.id.fab_navigate)
@@ -54,7 +56,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Bind(R.id.fab_cancel_maps)
     FloatingActionButton fabCancel;
 
-    private Activity activity = this;
     private GoogleMap mMap;
     private MapFragment mapFragment;
     private Set<Hospital> setHospital;
@@ -62,6 +63,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private LocationService locationService;
     private boolean closeLocation = false;
     private boolean closeDatabase = false;
+    private boolean firebasePersisted = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,13 +71,41 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         setContentView(R.layout.activity_maps);
 
-        // Iniciando serviços
+        startLayouts();
+
+
+        startServices();
+    }
+
+    public void onRefresh() {
+        startServices();
+
+    }
+
+    private void startLayouts(){
+        mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
         ButterKnife.bind(this);
+        ToolbarSupport.startToolbar(this, toolbar, "Emergency Helper");
+        this.loadButton();
+
+    }
+
+    private void startServices(){
+        // Iniciando serviços
         this.locationService = new LocationService(this);
-        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+
+        if(!firebasePersisted){
+            try{
+                FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+                firebasePersisted = true;
+            }catch(com.google.firebase.database.DatabaseException e){
+
+            }
+
+        }
         //---------------------
 
-        // Requisitando permição de rede
+        // Requisitando permissão de rede
         permissionHandler.requestPermissionNetworkState(this);
 
         // Iniciando conexão com o serviço de localização (GPS)
@@ -83,15 +113,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         // Iniciando asyncTask
         this.startAsyncTask();
-
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
-
-        final Toolbar toolbar = (Toolbar) findViewById(R.id.maps_toolbar);
-        ToolbarSupport.startToolbar(this, toolbar, "Emergency Helper");
-
-        this.loadButton();
-
 
         // Verificando se a rede está disponivel
         if(ServicesVerification.isOnline(this)) {
@@ -104,6 +125,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             Toast toast = Toast.makeText(this, "Modo offline iniciado", Toast.LENGTH_LONG);
             toast.show();
         }
+
+
     }
 
     private void startAsyncTask(){
@@ -118,14 +141,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         fabCall.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                chamarAjuda();
+                callHelp();
             }
         });
 
         fabCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                cancelarLigacao();
+                cancelCall();
             }
         });
 
@@ -150,7 +173,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         hideButtons();
 
         if (id == R.id.menu_telefones_uteis) {
-            startActivity(new Intent(this, TelefonesUteisActivity.class));
+            startActivity(new Intent(this, TelefonesEmergenciaActivity.class));
             return true;
         }else if(id == R.id.menu_sobre){
             startActivity(new Intent(this, SobreActivity.class));
@@ -192,7 +215,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         startActivity(intent);
     }
 
-    public void chamarAjuda() {
+    public void callHelp() {
 
         hideButtons();
 
@@ -200,14 +223,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         String numeroEmergencia = "192";
 
-        TelefoneHandler.ligarEmergencia(activity,
+        TelefoneHandler.ligarEmergencia(this,
                 numeroEmergencia,
                 R.id.popup_ligacao,
                 R.id.fab_cancel_maps,
                 R.id.text_count_down_maps);
     }
 
-    public void cancelarLigacao() {
+    public void cancelCall() {
         showButtons();
         TelefoneHandler.cancelarLigacao();
     }
@@ -250,7 +273,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 //            if(this.user != null) {
 //                hospitalPointList = PointController.orderByReference(this.user, hospitalPointList);
 //            }
-            Intent intent = new Intent(this, TelefonesUteisActivity.class);
+
+            //Abre a tela de telefones de emergência, caso não tenha rede
+            Intent intent = new Intent(this, TelefonesEmergenciaActivity.class);
             startActivity(intent);
         }
 
