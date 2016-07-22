@@ -1,5 +1,6 @@
 package app.com.bugdroidbuilder.paulo.emergencyhelper.controller;
 
+import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -61,6 +62,7 @@ public class HospitalDescriptionActivity extends AppCompatActivity {
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
 
+    private Activity activity;
     Target mPicassoTarget;
     private Hospital hospital;
 
@@ -175,11 +177,11 @@ public class HospitalDescriptionActivity extends AppCompatActivity {
     }
 
     private void configurarFab(final Hospital hospital) {
-
+        activity = this;
         mFabFavorito.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                NavigationHandler.navegar(getParent(), hospital.getLatitude(), hospital.getLongitude());
+                NavigationHandler.navegar(activity, hospital.getLatitude(), hospital.getLongitude());
             }
         });
     }

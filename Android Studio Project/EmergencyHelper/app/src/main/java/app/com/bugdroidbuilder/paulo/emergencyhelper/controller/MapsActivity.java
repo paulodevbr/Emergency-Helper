@@ -233,15 +233,17 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         }else{
 
-            // Exibir lista
-            List<Point> hospitalPointList = new ArrayList<>();
-            for(Hospital hospital : this.setHospital){
-                hospitalPointList.add(hospital);
-            }
-
-            if(this.user != null) {
+//            // Exibir lista
+//            List<Point> hospitalPointList = new ArrayList<>();
+//            for(Hospital hospital : this.setHospital){
+//                hospitalPointList.add(hospital);
+//            }
+//
+//            if(this.user != null) {
 //                hospitalPointList = PointController.orderByReference(this.user, hospitalPointList);
-            }
+//            }
+            Intent intent = new Intent(this, TelefonesUteisActivity.class);
+            startActivity(intent);
         }
 
         this.closeDatabase = true;

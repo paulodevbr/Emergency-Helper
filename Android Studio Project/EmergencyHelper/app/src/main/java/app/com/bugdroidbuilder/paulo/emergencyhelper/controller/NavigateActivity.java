@@ -1,5 +1,6 @@
 package app.com.bugdroidbuilder.paulo.emergencyhelper.controller;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -30,6 +31,7 @@ public class NavigateActivity extends AppCompatActivity {
     @Bind(R.id.list_hospitais)
     RecyclerView recyclerView;
 
+    Activity activity;
     private List<Hospital> listaHospitais = new ArrayList<>();
 
     private HospitaisAdapter mAdapter;
@@ -66,14 +68,14 @@ public class NavigateActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mAdapter);
-
+        activity = this;
         recyclerView.addOnItemTouchListener(new RecyclerViewListener.RecyclerTouchListener(getApplicationContext(), recyclerView, new RecyclerViewListener.ClickListener() {
 
             @Override
             public void onClick(View view, int position) {
 
-                Hospital Hospital = listaHospitais.get(position);
-
+                Hospital hospital = listaHospitais.get(position);
+                NavigationHandler.navegar(activity, hospital.getLatitude(), hospital.getLongitude());
 
             }
 
