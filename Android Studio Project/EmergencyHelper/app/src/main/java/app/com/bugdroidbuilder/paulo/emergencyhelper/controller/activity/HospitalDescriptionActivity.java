@@ -1,4 +1,4 @@
-package app.com.bugdroidbuilder.paulo.emergencyhelper.controller;
+package app.com.bugdroidbuilder.paulo.emergencyhelper.controller.activity;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
@@ -28,6 +28,8 @@ import org.greenrobot.eventbus.EventBus;
 
 import app.com.bugdroidbuilder.paulo.emergencyhelper.R;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.components.ToolbarSupport;
+import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.handler.NavigationHandler;
+import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.handler.TelefoneHandler;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.model.Hospital;
 import butterknife.Bind;
 import butterknife.ButterKnife;

@@ -1,4 +1,4 @@
-package app.com.bugdroidbuilder.paulo.emergencyhelper.controller;
+package app.com.bugdroidbuilder.paulo.emergencyhelper.controller.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -18,6 +18,7 @@ import app.com.bugdroidbuilder.paulo.emergencyhelper.R;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.components.HospitaisAdapter;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.components.RecyclerViewListener;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.components.ToolbarSupport;
+import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.handler.NavigationHandler;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.model.Hospital;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.model.Point;
 import butterknife.Bind;

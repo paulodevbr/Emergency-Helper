@@ -10,6 +10,7 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.util.Set;
 
+import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.activity.HospitalDescriptionActivity;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.model.Hospital;
 
 /**

@@ -1,4 +1,4 @@
-package app.com.bugdroidbuilder.paulo.emergencyhelper.controller;
+package app.com.bugdroidbuilder.paulo.emergencyhelper.controller.activity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -29,6 +29,11 @@ import java.util.List;
 import java.util.Set;
 
 import app.com.bugdroidbuilder.paulo.emergencyhelper.R;
+import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.AsyncHospital;
+import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.HospitalMarkerClickListener;
+import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.handler.PermissionHandler;
+import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.PointController;
+import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.handler.TelefoneHandler;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.model.Point;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.model.User;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.service.LocationService;
@@ -146,6 +151,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         if (id == R.id.menu_telefones_uteis) {
             startActivity(new Intent(this, TelefonesUteisActivity.class));
+            return true;
+        }else if(id == R.id.menu_sobre){
+            startActivity(new Intent(this, SobreActivity.class));
             return true;
         }
 

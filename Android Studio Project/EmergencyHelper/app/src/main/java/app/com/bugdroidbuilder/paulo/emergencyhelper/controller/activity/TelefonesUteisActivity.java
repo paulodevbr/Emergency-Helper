@@ -1,4 +1,4 @@
-package app.com.bugdroidbuilder.paulo.emergencyhelper.controller;
+package app.com.bugdroidbuilder.paulo.emergencyhelper.controller.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -13,8 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import app.com.bugdroidbuilder.paulo.emergencyhelper.R;
-import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.PermissionHandler;
-import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.TelefoneHandler;
+import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.handler.PermissionHandler;
+import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.handler.TelefoneHandler;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.model.TelefoneUtil;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.components.RecyclerViewListener;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.components.TelefonesAdapter;

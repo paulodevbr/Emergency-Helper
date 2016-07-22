@@ -2,6 +2,7 @@
     <string name="google_maps_key_pedro" templateMergeStrategy="preserve" translatable="false">AIzaSyAwLMnyfLimdBcPHLCIv8xZ-fxkdbn_2_Y</string>
     <string name="google_maps_key_paulo_notebook" templateMergeStrategy="preserve" translatable="false">AIzaSyCVsiCxx-yx60Pl9-Ew7HfF3yT10Wb9X9A</string>
     <string name="google_maps_key_paulo_desktop" templateMergeStrategy="preserve" translatable="false">AIzaSyC5N1ptJ49A779TIHAo54q2JfgOQmRZ-O8</string>
+    <string name="google_maps_key_julianny" templateMergeStrategy="preserve" translatable="false">AIzaSyAzsZZOFuyF3ZNOC8EA7Scl4bmeAxUUxS8</string>
 
     <string name="link_maps">http://maps.google.com/maps?</string>
     <string name="pacote_maps">com.google.android.apps.maps</string>

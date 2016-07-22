@@ -3,10 +3,14 @@
     <string name="title_activity_maps">Map</string>
     <string name="menu_configuracoes">Configurações</string>
     <string name="menu_hospitais">Hospitais</string>
-    <string name="menu_telefones">Telefones úteis</string>
+    <string name="menu_telefones">Telefones de Emergência</string>
+    <string name="menu_sobre">Sobre</string>
     <string name="title_activity_maps1">Map</string>
     <string name="count_down_call">
         Chamando ajuda em \n
     </string>
+    <string name="versao">v0.1</string>
+    <string name="sobre">Este aplicativo foi desenvolvido visando melhorar a qualidade do pronto atendimento da cidade
+        trazendo um método de ligação e navegação para emergências.</string>
 
 </resources>

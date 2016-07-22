@@ -23,7 +23,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="?actionBarSize"
-        tools:context=".controller.MapsActivity" />
+        tools:context=".controller.activity.MapsActivity" />
 
     <RelativeLayout
         android:id="@+id/relativeLayout"
