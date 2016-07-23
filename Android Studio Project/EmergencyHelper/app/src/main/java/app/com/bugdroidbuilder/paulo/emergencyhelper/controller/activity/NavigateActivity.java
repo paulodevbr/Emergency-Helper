@@ -11,6 +11,9 @@ import android.view.View;
 
 import com.google.gson.Gson;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +22,8 @@ import app.com.bugdroidbuilder.paulo.emergencyhelper.components.HospitaisAdapter
 import app.com.bugdroidbuilder.paulo.emergencyhelper.components.RecyclerViewListener;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.components.ToolbarSupport;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.handler.NavigationHandler;
+import app.com.bugdroidbuilder.paulo.emergencyhelper.model.BroadcastResponse;
+import app.com.bugdroidbuilder.paulo.emergencyhelper.model.GlobalValues;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.model.Hospital;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.model.Point;
 import butterknife.Bind;
@@ -40,6 +45,13 @@ public class NavigateActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (GlobalValues.getInstance().isOnline()) {
+            setTheme(R.style.AppTheme);
+        }else {
+            setTheme(R.style.AppThemeOffline);
+        }
+
         setContentView(R.layout.activity_navigate);
 
         ButterKnife.bind(this);
@@ -70,14 +82,15 @@ public class NavigateActivity extends AppCompatActivity {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mAdapter);
         activity = this;
-        recyclerView.addOnItemTouchListener(new RecyclerViewListener.RecyclerTouchListener(getApplicationContext(), recyclerView, new RecyclerViewListener.ClickListener() {
+        recyclerView.addOnItemTouchListener(
+                new RecyclerViewListener.RecyclerTouchListener(getApplicationContext(), recyclerView,
+                        new RecyclerViewListener.ClickListener() {
 
             @Override
             public void onClick(View view, int position) {
 
                 Hospital hospital = listaHospitais.get(position);
                 NavigationHandler.navegar(activity, hospital.getLatitude(), hospital.getLongitude());
-
             }
 
             @Override
@@ -85,5 +98,22 @@ public class NavigateActivity extends AppCompatActivity {
 
             }
         }));
+    }
+
+    @Subscribe
+    public void onEvent(BroadcastResponse response){
+        recreate();
+    }
+
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
     }
 }

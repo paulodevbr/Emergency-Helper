@@ -8,9 +8,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import app.com.bugdroidbuilder.paulo.emergencyhelper.R;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.components.ToolbarSupport;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.handler.TelefoneHandler;
+import app.com.bugdroidbuilder.paulo.emergencyhelper.model.BroadcastResponse;
+import app.com.bugdroidbuilder.paulo.emergencyhelper.model.GlobalValues;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -26,6 +31,13 @@ public class ConfiguracoesActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (GlobalValues.getInstance().isOnline()) {
+            setTheme(R.style.AppTheme);
+        }else {
+            setTheme(R.style.AppThemeOffline);
+        }
+
         setContentView(R.layout.activity_configuracoes);
         ButterKnife.bind(this);
         ToolbarSupport.startToolbarWithArrow(this,toolbar,"Configurações");
@@ -48,5 +60,22 @@ public class ConfiguracoesActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    @Subscribe
+    public void onEvent(BroadcastResponse response){
+        recreate();
+    }
+
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
     }
 }

@@ -9,12 +9,17 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import app.com.bugdroidbuilder.paulo.emergencyhelper.R;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.handler.PermissionHandler;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.handler.TelefoneHandler;
+import app.com.bugdroidbuilder.paulo.emergencyhelper.model.BroadcastResponse;
+import app.com.bugdroidbuilder.paulo.emergencyhelper.model.GlobalValues;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.model.TelefoneEmergencia;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.components.RecyclerViewListener;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.components.TelefonesAdapter;
@@ -37,13 +42,14 @@ public class TelefonesEmergenciaActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        boolean online = getIntent().getBooleanExtra("online", false);
-        if(!online){
+
+        if (GlobalValues.getInstance().isOnline()) {
+            setTheme(R.style.AppTheme);
+        }else {
             setTheme(R.style.AppThemeOffline);
         }
+
         setContentView(R.layout.activity_telefones);
-
-
 
         ButterKnife.bind(this);
 
@@ -108,4 +114,20 @@ public class TelefonesEmergenciaActivity extends AppCompatActivity {
         }));
     }
 
+    @Subscribe
+    public void onEvent(BroadcastResponse response){
+        recreate();
+    }
+
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
 }

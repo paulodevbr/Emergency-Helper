@@ -24,18 +24,13 @@ import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.handler.Permissi
 public class LocationService implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     private GoogleApiClient googleApiClient;
-    private Activity activity;
-    private PermissionHandler permissionHandler;
+    private Context context;
 
-    public LocationService(Activity activity) {
-        this.activity = activity;
-
-        // Requisitando permição para ver localização
-        this.permissionHandler = new PermissionHandler();
-        this.permissionHandler.requestPermissionLocation(this.activity);
+    public LocationService(Context context) {
+        this.context = context;
 
         // Iniciando google API client
-        this.googleApiClient = new GoogleApiClient.Builder(this.activity.getApplicationContext())
+        this.googleApiClient = new GoogleApiClient.Builder(this.context.getApplicationContext())
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .addApi(LocationServices.API)
@@ -55,8 +50,6 @@ public class LocationService implements GoogleApiClient.ConnectionCallbacks, Goo
     @Override
     public void onConnected(@Nullable Bundle bundle) {
 
-        Context context = this.activity.getApplicationContext();
-
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
@@ -68,10 +61,6 @@ public class LocationService implements GoogleApiClient.ConnectionCallbacks, Goo
             return;
         }
         Location myLocation = LocationServices.FusedLocationApi.getLastLocation(this.googleApiClient);
-
-        if( !ServicesVerification.isGpsEnable(context)){
-            myLocation = new Location("vazio");
-        }
 
         EventBus.getDefault().post(myLocation);
     }

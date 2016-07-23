@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
-    app:theme="@style/AppTheme">
+    app:theme="@style/AppTheme.AppBarOverlay">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/maps_toolbar"
@@ -13,8 +13,7 @@
         android:background="?attr/colorPrimary"
         android:elevation="6dp"
         android:minHeight="?attr/actionBarSize"
-        android:theme="@style/ToolbarTheme"
-        app:popupTheme="@style/ToolbarTheme">
+        app:popupTheme="@style/AppTheme.PopupOverlay">
             <RelativeLayout
                 android:layout_marginLeft="8dp"
                 android:layout_marginStart="8dp"

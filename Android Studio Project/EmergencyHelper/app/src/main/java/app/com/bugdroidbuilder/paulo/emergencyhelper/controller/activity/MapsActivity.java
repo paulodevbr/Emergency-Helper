@@ -9,10 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -21,7 +18,6 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.firebase.database.FirebaseDatabase;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -31,16 +27,15 @@ import java.util.List;
 import java.util.Set;
 
 import app.com.bugdroidbuilder.paulo.emergencyhelper.R;
-import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.AsyncHospital;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.HospitalMarkerClickListener;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.handler.PermissionHandler;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.PointController;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.handler.TelefoneHandler;
+import app.com.bugdroidbuilder.paulo.emergencyhelper.model.BroadcastResponse;
+import app.com.bugdroidbuilder.paulo.emergencyhelper.model.GlobalValues;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.model.Point;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.model.User;
-import app.com.bugdroidbuilder.paulo.emergencyhelper.service.LocationService;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.model.Hospital;
-import app.com.bugdroidbuilder.paulo.emergencyhelper.service.ServicesVerification;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.components.ToolbarSupport;
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -64,25 +59,27 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private MapFragment mapFragment;
     private Set<Hospital> setHospital;
     private User user = null;
-    private LocationService locationService;
-    private boolean closeLocation = false;
-    private boolean closeDatabase = false;
-    private boolean firebasePersisted = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        GlobalValues.getInstance().firstStart(this);
+
+        if (GlobalValues.getInstance().isOnline()) {
+            setTheme(R.style.AppTheme);
+        }else {
+            setTheme(R.style.AppThemeOffline);
+        }
+
         setContentView(R.layout.activity_maps);
 
         startLayouts();
-
         startServices();
     }
 
-    public void onRefresh() {
+    private void onRefresh() {
         startServices();
-
     }
 
     private void startLayouts(){
@@ -94,52 +91,23 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     private void startServices(){
-        // Iniciando serviços
-        this.locationService = new LocationService(this);
-
-        if(!firebasePersisted){
-            try{
-                FirebaseDatabase.getInstance().setPersistenceEnabled(true);
-                firebasePersisted = true;
-            }catch(com.google.firebase.database.DatabaseException e){
-
-            }
-
-        }
-        //---------------------
-
-        // Requisitando permissão de rede
+        // Requisitando permissão de rede e localizacao
         permissionHandler.requestPermissionNetworkState(this);
-
-        // Iniciando conexão com o serviço de localização (GPS)
-        this.locationService.connect();
-
-        // Iniciando asyncTask
-        this.startAsyncTask();
+        permissionHandler.requestPermissionLocation(this);
 
         // Verificando se a rede está disponivel
-        if(ServicesVerification.isOnline(this)) {
+        if(GlobalValues.getInstance().isOnline()) {
 
             // Iniciando mapa
             mapFragment.getMapAsync(this);
-
         }else{
 
-            Toast toast = Toast.makeText(this, "Modo offline iniciado", Toast.LENGTH_LONG);
-            toast.show();
-            Intent intent = new Intent(this, TelefonesEmergenciaActivity.class);
-            intent.putExtra("online", false);
-            startActivity(intent);
+            //Intent intent = new Intent(this, TelefonesEmergenciaActivity.class);
+            //intent.putExtra("online", false);
+            //startActivity(intent);
         }
 
 
-    }
-
-    private void startAsyncTask(){
-
-        // Iniciando asyncTask
-        AsyncHospital asyncHospital = new AsyncHospital();
-        asyncHospital.execute();
     }
 
     private void loadButton(){
@@ -147,7 +115,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         refreshButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onRefresh();
+                startServices();
             }
         });
 
@@ -187,17 +155,16 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         if (id == R.id.menu_telefones_uteis) {
             Intent intent = new Intent(this, TelefonesEmergenciaActivity.class);
-            intent.putExtra("online", true);
             startActivity(intent);
             return true;
+
         }else if(id == R.id.menu_sobre){
             startActivity(new Intent(this, SobreActivity.class));
             return true;
-        }
-//        else if(id ==R.id.menu_configuracoes){
-//            startActivity(new Intent(this, ConfiguracoesActivity.class));
-//            return true;
-//        }
+        } /*else if(id ==R.id.menu_configuracoes){
+            startActivity(new Intent(this, ConfiguracoesActivity.class));
+            return true;
+        }*/
 
         return super.onOptionsItemSelected(item);
     }
@@ -207,18 +174,29 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
+        if(this.setHospital != null) {
+            this.writeHospitalMarker();
+        }
+
         UiSettings uiSettings = mMap.getUiSettings();
         uiSettings.setMapToolbarEnabled(false);
     }
 
-    public void navegar(){
-        /*hideButtons();
-        Intent intent = new Intent(this, NavigateActivity.class);
-        Gson gson = new Gson();
-        String json = gson.toJson(setHospital);
+    private void writeHospitalMarker(){
 
-        intent.putExtra("hospitais",json);
-        startActivity(intent);*/
+        mMap.clear();
+
+        for (Hospital hospital : setHospital) {
+            MarkerOptions marker = hospital.drawPoint(this);
+            mMap.addMarker(marker);
+        }
+
+        // Definindo clickListener para os marcadores
+        HospitalMarkerClickListener hospitalMarkerClickListener = new HospitalMarkerClickListener(setHospital, this);
+        mMap.setOnMarkerClickListener(hospitalMarkerClickListener);
+    }
+
+    private void navegar(){
 
         List<Point> hospitalPointList = new ArrayList<>();
         for(Hospital hospital : this.setHospital){
@@ -234,7 +212,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         startActivity(intent);
     }
 
-    public void callHelp() {
+    private void callHelp() {
 
         hideButtons();
 
@@ -249,17 +227,17 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 R.id.text_count_down_maps);
     }
 
-    public void cancelCall() {
+    private void cancelCall() {
         showButtons();
         TelefoneHandler.cancelarLigacao();
     }
 
-    public void hideButtons() {
+    private void hideButtons() {
         fabCall.hide();
         fabNavigate.hide();
     }
 
-    public void showButtons() {
+    private void showButtons() {
         fabNavigate.show();
         fabCall.show();
     }
@@ -270,34 +248,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         this.setHospital = setHospital;
 
-        if(ServicesVerification.isOnline(this)) {
-
-            for (Hospital hospital : setHospital) {
-                MarkerOptions marker = hospital.drawPoint(this);
-                mMap.addMarker(marker);
-            }
-
-            // Definindo clickListener para os marcadores
-            HospitalMarkerClickListener hospitalMarkerClickListener = new HospitalMarkerClickListener(setHospital, this);
-            mMap.setOnMarkerClickListener(hospitalMarkerClickListener);
-
-        }else{
-
-//            // Exibir lista
-//            List<Point> hospitalPointList = new ArrayList<>();
-//            for(Hospital hospital : this.setHospital){
-//                hospitalPointList.add(hospital);
-//            }
-//
-//            if(this.user != null) {
-//                hospitalPointList = PointController.orderByReference(this.user, hospitalPointList);
-//            }
-
-            //Abre a tela de telefones de emergência, caso não tenha rede
-
+        if(this.mMap != null) {
+            this.writeHospitalMarker();
         }
-
-        this.closeDatabase = true;
     }
 
     // Buscando localização do usuario (GPS)
@@ -309,7 +262,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
             // Verificando se o GPS está habilitado
             // Se estiver insere o marcador do usuario
-            if(ServicesVerification.isGpsEnable(this)) {
+            if(GlobalValues.getInstance().haveLocation()) {
+
                 this.user = new User(myLocation);
                 LatLng latLng = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
 
@@ -319,10 +273,20 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoomInicial), 1500, null);
                 mMap.addMarker(userMarker);
             }
+        }
+    }
 
-            // Desconectando serviço de localização
-            this.locationService.disconnect();
-            this.closeLocation = true;
+    @Subscribe
+    public void onEvent(BroadcastResponse response){
+
+        switch(response.getFlag()) {
+            case BroadcastResponse.FLAG_INTERNET:
+                recreate();
+                break;
+
+            case BroadcastResponse.FLAG_GPS:
+                GlobalValues.getInstance().connect();
+                break;
         }
     }
 
@@ -335,28 +299,19 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onResume() {
         super.onResume();
-        // Verificando se a localização já foi encerrada definitivamente
-        // Caso não tenha sido, reabrir conexão.
-        if(!this.closeLocation){
-            this.locationService.connect();
-        }
-
-        if(!this.closeDatabase){
-            this.startAsyncTask();
-        }
+        GlobalValues.getInstance().connect();
         showButtons();
     }
 
     @Override
     public void onStop() {
         EventBus.getDefault().unregister(this);
-        this.locationService.disconnect();
+        GlobalValues.getInstance().disconnect();
         super.onStop();
     }
 
     @Override
     public void onDestroy(){
-        this.locationService.disconnect();
         super.onDestroy();
     }
 }

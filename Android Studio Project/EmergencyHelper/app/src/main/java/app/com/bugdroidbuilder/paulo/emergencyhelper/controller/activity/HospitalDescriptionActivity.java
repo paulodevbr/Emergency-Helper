@@ -25,11 +25,14 @@ import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import app.com.bugdroidbuilder.paulo.emergencyhelper.R;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.components.ToolbarSupport;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.handler.NavigationHandler;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.controller.handler.TelefoneHandler;
+import app.com.bugdroidbuilder.paulo.emergencyhelper.model.BroadcastResponse;
+import app.com.bugdroidbuilder.paulo.emergencyhelper.model.GlobalValues;
 import app.com.bugdroidbuilder.paulo.emergencyhelper.model.Hospital;
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -70,6 +73,13 @@ public class HospitalDescriptionActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (GlobalValues.getInstance().isOnline()) {
+            setTheme(R.style.AppTheme);
+        }else {
+            setTheme(R.style.AppThemeOffline);
+        }
+
         setContentView(R.layout.activity_hospital_description);
 
         ButterKnife.bind(this);
@@ -192,4 +202,20 @@ public class HospitalDescriptionActivity extends AppCompatActivity {
         TelefoneHandler.discar(this, this.hospital.getTelefone());
     }
 
+    @Subscribe
+    public void onEvent(BroadcastResponse response){
+        recreate();
+    }
+
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
 }
