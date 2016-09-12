@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="google_maps_key_pedro" templateMergeStrategy="preserve" translatable="false">AIzaSyAwLMnyfLimdBcPHLCIv8xZ-fxkdbn_2_Y</string>
     <string name="google_maps_key_paulo_notebook" templateMergeStrategy="preserve" translatable="false">AIzaSyCVsiCxx-yx60Pl9-Ew7HfF3yT10Wb9X9A</string>
